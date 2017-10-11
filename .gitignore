@@ -5,3 +5,5 @@
 /.vs/Ankieter/v15
 /Ankieter/obj
 /Ankieter/wwwroot/lib
+/Ankieter/bin/Debug/netcoreapp2.0
+/.vs/config
