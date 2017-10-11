@@ -7,3 +7,4 @@
 /Ankieter/wwwroot/lib
 /Ankieter/bin/Debug/netcoreapp2.0
 /.vs/config
+/Ankieter/appsettings.Private.json

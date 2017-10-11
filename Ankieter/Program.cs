@@ -19,6 +19,10 @@ namespace Ankieter
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(conf =>
+                {
+                    conf.AddJsonFile("appsettings.Private.json");
+                })
                 .UseStartup<Startup>()
                 .Build();
     }
