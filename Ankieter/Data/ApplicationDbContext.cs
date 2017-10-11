@@ -4,6 +4,7 @@ using Ankieter.Models;
 using Ankieter.Mongo;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Ankieter.Models.Forms;
 
 namespace Ankieter.Data
 {
@@ -26,6 +27,8 @@ namespace Ankieter.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Ankieter.Models.Forms.CreatedForm> CreatedForm { get; set; }
 
         public IMongoCollection<Question> Questions
         {
