@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-Ankieter-024C8B5B-7AC8-4F2D-B973-FF8F8078E619</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="wwwroot\Form\**" />
+    <Content Remove="wwwroot\Form\**" />
+    <EmbeddedResource Remove="wwwroot\Form\**" />
+    <None Remove="wwwroot\Form\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />

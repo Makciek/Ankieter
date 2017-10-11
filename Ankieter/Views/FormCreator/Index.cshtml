@@ -1,9 +1,12 @@
 ﻿@model Ankieter.Models.Forms.CreatedForm
 
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js" asp-append-version="false"></script>
+<script src="~/js/Form/formCreatorController.js" asp-append-version="true"></script>
+
 <h4>CreatedForm</h4>
 <hr />
-<div class="row">
-    <div class="col-md-6 spliter-right">
+<div class="row" ng-app="myApp">
+    <div class="col-md-6 spliter-right" ng-controller="formCreatorController">
         <form asp-action="Index">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -11,7 +14,10 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="spliter-down spliter-top padding-bottom-5 padding-top-5">
+            <div class="panel">
+                <div id="inputList" ng-repeat="input in inputs">
+                    {{input.type}}
+                </div>
                 <button class="btn btn-default" style="width: 100%;" type="button">
                     <span class="text-center">
                         Add new input
@@ -32,8 +38,6 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-
-<script src="~/js/Form/formCreator.js" asp-append-version="true"></script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
