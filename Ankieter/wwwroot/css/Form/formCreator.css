@@ -24,9 +24,16 @@
 }
 
 .fa-add {
-    color: green;
+    color: whitesmoke;
 }
 
 .btn:focus {
     outline: none;
+}
+
+.toolkitButton {
+    width: 20px;
+    height: 20px;
+    padding: 0px;
+    margin: 0px;
 }
