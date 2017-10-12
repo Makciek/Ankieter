@@ -82,8 +82,49 @@
                                 <input type="checkbox" id="isRequired" ng-model="newInput.isRequired"> {{newInput.isRequired ? "Yes" : "No"}}
                             </div>
                         </div>
-                    </div>
+                        <div class="col-md-12" ng-show="newInput.type.id===1 || newInput.type.id===2">
+                            <div class="form-group">
+                                <label for="inputMinLen">Min. number of character*:</label>
+                                <input type="number" class="form-control" id="inputMinLen" ng-model="newInput.textMinLength" required="" />
+                            </div>
+                            <div class="form-group">
+                                <label for="inputMaxLen">Max. number of character(-1 for limitless)*:</label>
+                                <input type="number" class="form-control" id="inputMaxLen" ng-model="newInput.textMaxLength" required="" />
+                            </div>
+                        </div>
+                        <div class="col-md-12" ng-show="newInput.type.id===3 || newInput.type.id===4 || newInput.type.id===5">
+                            <div class="form-group">
+                                <label ng-show="$scope.newClicableOptions.length">Options:</label><br/>
+                                
+                                <ul class="list-group" ng-repeat="option in newClicableOptions">
+                                    <li class="list-group-item active">
+                                        <div style="display: inline-block">
+                                            {{ option }}
+                                        </div>
+                                        <div style="display: inline-block; text-align: right; float: right;">
+                                            <button class="btn btn-sm btn-default toolkitButton" ng-click="editOption(option)" type="button">
+                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-default toolkitButton" data-toggle="modal" data-target="#myModal" ng-click="removeOptionStep1(option)" type="button">
+                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
 
+                                <label for="clicableOption">Add possible answers:</label>
+                                <input type="text" class="form-control" id="clicableOption" ng-model="newClicableOption" required=""/>
+                                <br/>
+                                <button class="form-group col-md-4 btn btn-default btn-success" style="width: 100%;" type="button" ng-click="addNewClicableOption()">
+                                    <span class="text-center">
+                                        Add new option
+                                        <i class="fa fa-plus-circle fa-lg fa-add" aria-hidden="true"></i>
+                                    </span>
+                                </button>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
                     <button class="form-group col-md-4 btn btn-default btn-success" style="width: 100%;" type="button" ng-click="addNewInputToInputList()">
                         <span class="text-center">
                             Add new input
