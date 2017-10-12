@@ -2,9 +2,10 @@
 
 myApp.controller('formCreatorController', ['$scope', function ($scope) {
     $scope.lastInputId = 0;
+    $scope.lastOptionId = 0;
     $scope.newInput = [];
     $scope.newClicableOptions = [];
-    $scope.newClicableOption = "";
+    $scope.newClicableOption = { id: $scope.lastOptionId++, content: "" };
     $scope.inputs = [];
     $scope.errorMsg = "";
 
@@ -62,7 +63,7 @@ myApp.controller('formCreatorController', ['$scope', function ($scope) {
 
     $scope.addNewClicableOption = function () {
         $scope.newClicableOptions.push($scope.newClicableOption);
-        $scope.newClicableOption = "";
+        $scope.newClicableOption = { id: $scope.lastOptionId++, content: "" };
     }
 
     $scope.hideErrorBox = function () {
@@ -79,6 +80,15 @@ myApp.controller('formCreatorController', ['$scope', function ($scope) {
 
     $scope.removeInputStep2 = function () {
         $scope.inputs = $scope.inputs.filter(item => item.id !== $scope.inputToRemove.id);
+        $scope.inputToRemove = null;
+    }
+
+    $scope.removeOptionStep1 = function (input) {
+        $scope.optionToRemove = input;
+    }
+
+    $scope.removeOptionStep2 = function () {
+        $scope.newClicableOptions = $scope.newClicableOptions.filter(item => item.id !== $scope.optionToRemove.id);
         $scope.inputToRemove = null;
     }
 
