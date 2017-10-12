@@ -1,5 +1,3 @@
-using System;
-
 namespace Ankieter.Models
 {
     public class ErrorViewModel

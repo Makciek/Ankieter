@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ankieter.Data;
 using Ankieter.Models;
+using Ankieter.Mongo;
 using Ankieter.Services;
 
 namespace Ankieter
@@ -37,6 +38,12 @@ namespace Ankieter
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
+            services.Configure<MongoSettings>(options =>
+            {
+                options.ConnectionString = Configuration.GetSection("MongoConnection:ConnectionString").Value;
+                options.Database = Configuration.GetSection("MongoConnection:Database").Value;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +70,8 @@ namespace Ankieter
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            MongoConfigurator.Initialize();
         }
     }
 }

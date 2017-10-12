@@ -1,19 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Ankieter.Models;
+using Ankieter.Mongo;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using Ankieter.Models.Forms;
 
 namespace Ankieter.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        private readonly IMongoDatabase _database = null;
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IOptions<MongoSettings> settings)
             : base(options)
         {
+            var client = new MongoClient(settings.Value.ConnectionString);
+            if (client != null)
+                _database = client.GetDatabase(settings.Value.Database);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -25,5 +29,21 @@ namespace Ankieter.Data
         }
 
         public DbSet<Ankieter.Models.Forms.CreatedForm> CreatedForm { get; set; }
+
+        public IMongoCollection<Question> Questions
+        {
+            get
+            {
+                return _database.GetCollection<Question>("Question");
+            }
+        }
+
+        public IMongoCollection<Answer> Answers
+        {
+            get
+            {
+                return _database.GetCollection<Answer>("Answer");
+            }
+        }
     }
 }
