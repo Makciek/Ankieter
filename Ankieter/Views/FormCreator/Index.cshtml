@@ -45,11 +45,11 @@
         </div>
     </div>
     <div class="col-md-6 spliter-right">
-        <form asp-action="Index">
+        <form asp-action="Index" id="createdForm">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="Name" class="control-label" required="">Questionnaire name*</label>
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="panel">
@@ -74,7 +74,7 @@
                     <div>
                         <div class="form-group">
                             <label for="inputName">Name*:</label>
-                            <input type="text" class="form-control" id="inputName" ng-model="newInput.name" required="" />
+                            <input type="text" class="form-control" id="inputName" ng-model="newInput.name" required=""/>
                         </div>
                         <div class="form-group">
                             <label for="inputDescription">Description:</label>
@@ -82,7 +82,7 @@
                         </div>
                         <div>
                             <div class="col-md-6 dropdown">
-                                <label for="inputType">Type*:</label><br />
+                                <label for="inputType">Type*:</label><br/>
                                 <button class="btn btn-default dropdown-toggle" type="button" id="inputType" data-toggle="dropdown">
                                     {{newInput.type.name}}
                                     <span class="caret"></span>
@@ -95,24 +95,24 @@
                                 </ul>
                             </div>
                             <div class="col-md-6 form-group">
-                                <label for="isRequired">Is input required:</label><br />
+                                <label for="isRequired">Is input required:</label><br/>
                                 <input type="checkbox" id="isRequired" ng-model="newInput.isRequired"> {{newInput.isRequired ? "Yes" : "No"}}
                             </div>
                         </div>
                         <div class="col-md-12" ng-show="newInput.type.id===1 || newInput.type.id===2">
                             <div class="form-group">
                                 <label for="inputMinLen">Min. number of character*:</label>
-                                <input type="number" class="form-control" id="inputMinLen" ng-model="newInput.textMinLength" required="" />
+                                <input type="number" class="form-control" id="inputMinLen" ng-model="newInput.textMinLength" required=""/>
                             </div>
                             <div class="form-group">
                                 <label for="inputMaxLen">Max. number of character(-1 for limitless)*:</label>
-                                <input type="number" class="form-control" id="inputMaxLen" ng-model="newInput.textMaxLength" required="" />
+                                <input type="number" class="form-control" id="inputMaxLen" ng-model="newInput.textMaxLength" required=""/>
                             </div>
                         </div>
                         <div class="col-md-12" ng-show="newInput.type.id===3 || newInput.type.id===4 || newInput.type.id===5">
                             <div class="form-group">
-                                <label ng-show="$scope.newClicableOptions.length">Options:</label><br/>
-                                
+                                <label ng-show="newClicableOptions.length">Options:</label><br/>
+
                                 <ul class="list-group" ng-repeat="option in newClicableOptions">
                                     <li class="list-group-item active">
                                         <div style="display: inline-block">
@@ -130,9 +130,9 @@
                                 </ul>
 
                                 <label for="clicableOption">Add possible answers:</label>
-                                <input type="text" class="form-control" id="clicableOption" ng-model="newClicableOption.content" required=""/>
+                                <input type="text" class="form-control" id="clicableOption" ng-model="newClicableOption.content"/>
                                 <br/>
-                                <button class="form-group col-md-4 btn btn-default btn-success" style="width: 100%;" type="button" ng-click="addNewClicableOption()">
+                                <button class="form-group col-md-4 btn btn-default btn-success" style="width: 100%;" type="button" ng-click="addOrUpdateNewClicableOption()">
                                     <span class="text-center">
                                         Add new option
                                         <i class="fa fa-plus-circle fa-lg fa-add" aria-hidden="true"></i>
@@ -142,7 +142,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="form-group col-md-4 btn btn-default btn-success" style="width: 100%;" type="button" ng-click="addNewInputToInputList()">
+                    <button class="form-group col-md-4 btn btn-default btn-success" style="width: 100%;" type="button" ng-click="addOrUpdateNewInputToInputList()">
                         <span class="text-center">
                             Add new input
                             <i class="fa fa-plus-circle fa-lg fa-add" aria-hidden="true"></i>
@@ -151,7 +151,7 @@
                 </div>
             </div>
             <div class="form-group padding-top-5">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="button" value="Create" ng-click="submitForm()" class="btn btn-default btn-danger"/>
             </div>
         </form>
     </div>

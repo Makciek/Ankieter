@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Ankieter.Models.Forms;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ankieter.Controllers
 {
@@ -6,6 +7,12 @@ namespace Ankieter.Controllers
     {
         // GET
         public IActionResult Index()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult Index(CreatedForm form)
         {
             return View();
         }

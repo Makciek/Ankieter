@@ -47,7 +47,7 @@ myApp.controller('formCreatorController', ['$scope', function ($scope) {
         $scope.newInput.type = type;
     }
 
-    $scope.addNewInputToInputList = function () {
+    $scope.addOrUpdateNewInputToInputList = function () {
         if ($scope.newInput.name.length < 1 ||
             $scope.newInput.type.id < 1) {
             $scope.errorMsg = "You must fill all required fields!";
@@ -55,14 +55,31 @@ myApp.controller('formCreatorController', ['$scope', function ($scope) {
             return;
         }
 
-        $scope.inputs.clicableOptions = $scope.newClicableOptions;
+        index = $scope.inputs.map(function (e) { return e.id; }).indexOf($scope.newInput.id);
+        if (index > -1) {
+            $scope.inputs[index] = $scope.newInput;
+            $scope.inputs[index].clicableOptions = $scope.newClicableOptions;
+        } else {
+            $scope.newInput.clicableOptions = $scope.newClicableOptions;
+            $scope.inputs.push($scope.newInput);
+        }
 
-        $scope.inputs.push($scope.newInput);
         $scope.cleanNewInput();
+        $scope.cleanTypesMetadata();
+        $scope.newClicableOptions = [];
     }
 
-    $scope.addNewClicableOption = function () {
-        $scope.newClicableOptions.push($scope.newClicableOption);
+    $scope.addOrUpdateNewClicableOption = function () {
+        if ($scope.newClicableOption.content.length < 1) {
+            return;
+        }
+
+        index = $scope.newClicableOptions.map(function (e) { return e.id; }).indexOf($scope.newClicableOption.id);
+        if (index > -1) {
+            $scope.newClicableOptions[index] = $scope.newClicableOption;
+        } else {
+            $scope.newClicableOptions.push($scope.newClicableOption);
+        }
         $scope.newClicableOption = { id: $scope.lastOptionId++, content: "" };
     }
 
@@ -71,7 +88,26 @@ myApp.controller('formCreatorController', ['$scope', function ($scope) {
     }
 
     $scope.editInput = function (input) {
+        if (!$scope.newInput.name.length < 1 &&
+            !$scope.newInput.type.id < 1) {
+            $scope.addOrUpdateNewClicableOption();
+            $scope.addOrUpdateNewInputToInputList();
+        }
+        
+        index = $scope.inputs.map(function (e) { return e.id; }).indexOf(input.id);
+        if (index > -1) {
+            $scope.newInput = $scope.inputs[index];
+            $scope.newClicableOptions = $scope.inputs[index].clicableOptions;
+        } else {
+            alert("Something went realy wrong!");
+        }
+    }
 
+    $scope.editOption = function (input) {
+        if ($scope.newClicableOption.content !== "") {
+            $scope.addOrUpdateNewClicableOption();
+        }
+        $scope.newClicableOption = input;
     }
 
     $scope.removeInputStep1 = function (input) {
@@ -91,6 +127,24 @@ myApp.controller('formCreatorController', ['$scope', function ($scope) {
         $scope.newClicableOptions = $scope.newClicableOptions.filter(item => item.id !== $scope.optionToRemove.id);
         $scope.inputToRemove = null;
     }
+
+    $scope.submitForm = function() {
+        if (!$scope.newInput.name.length < 1 &&
+            !$scope.newInput.type.id < 1) {
+            $scope.addOrUpdateNewClicableOption();
+            $scope.addOrUpdateNewInputToInputList();
+        }
+
+        $("#createdForm").submit();
+    }
+
+    $("#createdForm").submit(function (eventObj) {
+        $('<input />').attr('type', 'hidden')
+            .attr('name', "FormStructure")
+            .attr('value', JSON.stringify($scope.inputs))
+            .appendTo('#createdForm');
+        return true;
+    });
 
     $scope.cleanNewInput();
     $scope.hideErrorBox();
