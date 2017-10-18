@@ -2,10 +2,10 @@
 
 namespace Ankieter.Models
 {
-    public class Questionnaire : BaseEntiity
+    public class QuestionnaireSql : BaseEntiity
     {
         public string Name { get; set; }
 
-        public virtual ICollection<Question> Questions { get; set; }
+        public string QuestionnaireMongoId { get; set; }
     }
 }

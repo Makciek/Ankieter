@@ -38,9 +38,9 @@ namespace Ankieter
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IAnswerMongoRepo, AnswerMongoRepo>();
-            services.AddTransient<IQuestionMongoRepo, QuestionMongoRepo>();
+            services.AddTransient<IQuestionnaireSqlRepo, QuestionnaireSqlRepo>();
             services.AddTransient<IQuestionnaireMongoRepo, QuestionnaireMongoRepo>();
+
 
             services.AddMvc();
 

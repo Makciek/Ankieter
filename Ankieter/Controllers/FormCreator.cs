@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ankieter.IRepo;
+using Ankieter.Models;
 using Ankieter.Models.Forms;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +10,12 @@ namespace Ankieter.Controllers
     public class FormCreator : Controller
     {
         private readonly IQuestionnaireMongoRepo _questionnaireMongoRepo;
+        private readonly IQuestionnaireSqlRepo _questionnaireSqlRepo;
 
-        public FormCreator(IQuestionnaireMongoRepo questionnaireMongoRepo)
+        public FormCreator(IQuestionnaireMongoRepo questionnaireMongoRepo, IQuestionnaireSqlRepo questionnaireSqlRepo)
         {
             _questionnaireMongoRepo = questionnaireMongoRepo;
+            _questionnaireSqlRepo = questionnaireSqlRepo;
         }
 
         public IActionResult Index()
@@ -20,11 +24,29 @@ namespace Ankieter.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(CreatedForm form)
+        public async Task Index(CreatedForm form)
         {
-            await _questionnaireMongoRepo.CreatedFormToQuestionnaireAndCreate(form);
+            var signature = Guid.NewGuid() + "/" + DateTime.Now.Day + "/" + DateTime.Now.Month + "/" + DateTime.Now.Year;
 
-            return View();
+            var questionnaireMongo = new QuestionnaireMongo()
+            {
+                FormStructure = form.FormStructure,
+                CreateDate = DateTime.Now,
+                UpdateDate = DateTime.Now,
+                QuestionnaireSqlId = signature
+            };
+
+            var questionnaireSql = new QuestionnaireSql()
+            {
+                Name = form.Name,
+                CreateDate = DateTime.Now,
+                UpdateDate = DateTime.Now,
+                QuestionnaireMongoId = signature
+            };
+
+            await _questionnaireMongoRepo.CreateAsync(questionnaireMongo);
+
+            await _questionnaireSqlRepo.CreateAsync(questionnaireSql);
         }
     }
 }
