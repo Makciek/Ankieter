@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ankieter.Data;
+using Ankieter.IRepo;
 using Ankieter.Models;
 using Ankieter.Mongo;
+using Ankieter.Repo;
 using Ankieter.Services;
 
 namespace Ankieter
@@ -36,6 +38,9 @@ namespace Ankieter
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IAnswerMongoRepo, AnswerMongoRepo>();
+            services.AddTransient<IQuestionMongoRepo, QuestionMongoRepo>();
+            services.AddTransient<IQuestionnaireMongoRepo, QuestionnaireMongoRepo>();
 
             services.AddMvc();
 
