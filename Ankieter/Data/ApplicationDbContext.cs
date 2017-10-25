@@ -29,6 +29,8 @@ namespace Ankieter.Data
         }
 
         public DbSet<QuestionnaireSql> QuestionnaireSqls { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
 
         public IMongoCollection<Question> Questions => _database.GetCollection<Question>("Question");
         public IMongoCollection<Answer> Answers => _database.GetCollection<Answer>("Answer");

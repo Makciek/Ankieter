@@ -36,6 +36,8 @@
                     @if (User.IsInRole("admin") || true)
                     {
                         <li><a asp-area="" asp-controller="FormCreator" asp-action="Index">Create form</a></li> // for test purposes
+                        <li><a asp-area="" asp-controller="ApplicationUser" asp-action="Index">Users</a></li>
+                        <li><a asp-area="" asp-controller="ApplicationRole" asp-action="Index">Roles</a></li>
                     }
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
