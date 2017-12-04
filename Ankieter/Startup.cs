@@ -12,7 +12,7 @@ using Ankieter.Data;
 using Ankieter.IRepo;
 using Ankieter.Models;
 using Ankieter.Mongo;
-using Ankieter.Repo;
+//using Ankieter.Repo;
 using Ankieter.Services;
 
 namespace Ankieter
@@ -37,10 +37,11 @@ namespace Ankieter
                 .AddDefaultTokenProviders();
 
             // Add application services.
+            services.AddTransient<IFormService, FormService>();
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IAnswerMongoRepo, AnswerMongoRepo>();
-            services.AddTransient<IQuestionMongoRepo, QuestionMongoRepo>();
-            services.AddTransient<IQuestionnaireMongoRepo, QuestionnaireMongoRepo>();
+            //services.AddTransient<IAnswerMongoRepo, AnswerMongoRepo>();
+            //services.AddTransient<IQuestionMongoRepo, QuestionMongoRepo>();
+            //services.AddTransient<IQuestionnaireMongoRepo, QuestionnaireMongoRepo>();
 
             services.AddMvc();
 

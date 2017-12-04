@@ -1,17 +1,23 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ankieter.IRepo;
+using Ankieter.Models;
 using Ankieter.Models.Forms;
+using Ankieter.Services;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
+using MongoDB.Bson.IO;
+using MongoDB.Bson.Serialization;
 
 namespace Ankieter.Controllers
 {
     public class FormCreator : Controller
     {
-        private readonly IQuestionnaireMongoRepo _questionnaireMongoRepo;
+        private readonly IFormService _formService;
 
-        public FormCreator(IQuestionnaireMongoRepo questionnaireMongoRepo)
+        public FormCreator(IFormService formService)
         {
-            _questionnaireMongoRepo = questionnaireMongoRepo;
+            _formService = formService;
         }
 
         public IActionResult Index()
@@ -22,7 +28,10 @@ namespace Ankieter.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(CreatedForm form)
         {
-            await _questionnaireMongoRepo.CreatedFormToQuestionnaireAndCreate(form);
+            if (!await _formService.CreateForm(form))
+            {
+                ViewData["Error"] = "Something went wrong";
+            }
 
             return View();
         }

@@ -1,151 +1,169 @@
-﻿var myApp = angular.module('myApp', []);
+﻿var myApp = angular.module('myApp');
 
-myApp.controller('formCreatorController', ['$scope', function ($scope) {
-    $scope.lastInputId = 0;
-    $scope.lastOptionId = 0;
-    $scope.newInput = [];
-    $scope.newClicableOptions = [];
-    $scope.newClicableOption = { id: $scope.lastOptionId++, content: "" };
-    $scope.inputs = [];
-    $scope.errorMsg = "";
+(function (app) {
+    "use strict";
+    app.controller('formCreatorController',
+        [
+            '$scope', 'formItemService', function ($scope, formItemService) {
+                $scope.lastInputId = 0;
+                $scope.lastOptionId = 0;
+                $scope.newInput = [];
+                $scope.newClicableOptions = [];
+                $scope.newClicableOption = { id: $scope.lastOptionId++, content: "" };
+                $scope.inputs = [];
+                $scope.errorMsg = "";
 
-    $scope.possibleInputTypes = [
-        { id: 0, name: "Not Selected" },
-        { id: 1, name: "Text" },
-        { id: 2, name: "Textarea" },
-        { id: 3, name: "Radio" },
-        { id: 4, name: "Checkbox" },
-        { id: 5, name: "Dropdown" },
-    ];
+                $scope.possibleInputTypes = [
+                    { id: 0, name: "Not Selected" },
+                    { id: 1, name: "Text" },
+                    { id: 2, name: "Textarea" },
+                    { id: 3, name: "Radio" },
+                    { id: 4, name: "Checkbox" },
+                    { id: 5, name: "Dropdown" },
+                ];
 
-    $scope.cleanNewInput = function (input) {
-        $scope.newInput = {
-            id: $scope.lastInputId++,
-            type: $scope.possibleInputTypes[0],
-            name: "",
-            description: "",
-            isRequired: true,
+                $scope.cleanNewInput = function (input) {
+                    $scope.newInput = {
+                        id: $scope.lastInputId++,
+                        type: $scope.possibleInputTypes[0],
+                        name: "",
+                        description: "",
+                        isRequired: true,
 
-            textMinLength: 0,
-            textMaxLength: -1,
+                        textMinLength: 0,
+                        textMaxLength: -1,
 
-            clicableOptions: []
-        };
-    }
-    
-    $scope.cleanTypesMetadata = function () {
-        $scope.newInput.textMinLength = 0;
-        $scope.newInput.textMaxLength = -1;
-        $scope.newInput.clicableOptions = [];
-    }
+                        clicableOptions: []
+                    };
+                }
 
-    $scope.typeSelected = function (type) {
-        if ($scope.newInput.type.id === type.id)
-            return;
+                $scope.cleanTypesMetadata = function () {
+                    $scope.newInput.textMinLength = 0;
+                    $scope.newInput.textMaxLength = -1;
+                    $scope.newInput.clicableOptions = [];
+                }
 
-        $scope.cleanTypesMetadata();
-        $scope.newInput.type = type;
-    }
+                $scope.typeSelected = function (type) {
+                    if ($scope.newInput.type.id === type.id)
+                        return;
 
-    $scope.addOrUpdateNewInputToInputList = function () {
-        if ($scope.newInput.name.length < 1 ||
-            $scope.newInput.type.id < 1) {
-            $scope.errorMsg = "You must fill all required fields!";
-            $("#errorDiv").show();
-            return;
-        }
+                    $scope.cleanTypesMetadata();
+                    $scope.newInput.type = type;
+                }
 
-        index = $scope.inputs.map(function (e) { return e.id; }).indexOf($scope.newInput.id);
-        if (index > -1) {
-            $scope.inputs[index] = $scope.newInput;
-            $scope.inputs[index].clicableOptions = $scope.newClicableOptions;
-        } else {
-            $scope.newInput.clicableOptions = $scope.newClicableOptions;
-            $scope.inputs.push($scope.newInput);
-        }
+                $scope.addOrUpdateNewInputToInputList = function () {
+                    if ($scope.newInput.name.length < 1 ||
+                        $scope.newInput.type.id < 1) {
+                        $scope.errorMsg = "You must fill all required fields!";
+                        $("#errorDiv").show();
+                        return;
+                    }
 
-        $scope.cleanNewInput();
-        $scope.cleanTypesMetadata();
-        $scope.newClicableOptions = [];
-    }
+                    index = $scope.inputs.map(function (e) { return e.id; }).indexOf($scope.newInput.id);
+                    if (index > -1) {
+                        $scope.inputs[index] = angular.copy($scope.newInput);
 
-    $scope.addOrUpdateNewClicableOption = function () {
-        if ($scope.newClicableOption.content.length < 1) {
-            return;
-        }
+                        $scope.inputs[index].clicableOptions = $scope.newClicableOptions.length > 0
+                            ? angular.copy($scope.newClicableOptions)
+                            : [];
 
-        index = $scope.newClicableOptions.map(function (e) { return e.id; }).indexOf($scope.newClicableOption.id);
-        if (index > -1) {
-            $scope.newClicableOptions[index] = $scope.newClicableOption;
-        } else {
-            $scope.newClicableOptions.push($scope.newClicableOption);
-        }
-        $scope.newClicableOption = { id: $scope.lastOptionId++, content: "" };
-    }
+                    } else {
+                        $scope.newInput.clicableOptions = $scope.newClicableOptions.length > 0
+                            ? angular.copy($scope.newClicableOptions)
+                            : [];
+                        $scope.inputs.push(angular.copy($scope.newInput));
+                    }
 
-    $scope.hideErrorBox = function () {
-        $("#errorDiv").hide();
-    }
+                    formItemService.setItems($scope.items);
 
-    $scope.editInput = function (input) {
-        if (!$scope.newInput.name.length < 1 &&
-            !$scope.newInput.type.id < 1) {
-            $scope.addOrUpdateNewClicableOption();
-            $scope.addOrUpdateNewInputToInputList();
-        }
-        
-        index = $scope.inputs.map(function (e) { return e.id; }).indexOf(input.id);
-        if (index > -1) {
-            $scope.newInput = $scope.inputs[index];
-            $scope.newClicableOptions = $scope.inputs[index].clicableOptions;
-        } else {
-            alert("Something went realy wrong!");
-        }
-    }
+                    $scope.cleanNewInput();
+                    $scope.cleanTypesMetadata();
+                    $scope.newClicableOptions = [];
+                }
 
-    $scope.editOption = function (input) {
-        if ($scope.newClicableOption.content !== "") {
-            $scope.addOrUpdateNewClicableOption();
-        }
-        $scope.newClicableOption = input;
-    }
+                $scope.addOrUpdateNewClicableOption = function () {
+                    if ($scope.newClicableOption.content.length < 1) {
+                        return;
+                    }
 
-    $scope.removeInputStep1 = function (input) {
-        $scope.inputToRemove = input;
-    }
+                    index = $scope.newClicableOptions.map(function (e) { return e.id; })
+                        .indexOf($scope.newClicableOption.id);
+                    if (index > -1) {
+                        $scope.newClicableOptions[index] = angular.copy($scope.newClicableOption);
+                    } else {
+                        $scope.newClicableOptions.push(angular.copy($scope.newClicableOption));
+                    }
+                    $scope.newClicableOption = { id: $scope.lastOptionId++, content: "" };
+                }
 
-    $scope.removeInputStep2 = function () {
-        $scope.inputs = $scope.inputs.filter(item => item.id !== $scope.inputToRemove.id);
-        $scope.inputToRemove = null;
-    }
+                $scope.hideErrorBox = function () {
+                    $("#errorDiv").hide();
+                }
 
-    $scope.removeOptionStep1 = function (input) {
-        $scope.optionToRemove = input;
-    }
+                $scope.editInput = function (input) {
+                    if (!$scope.newInput.name.length < 1 &&
+                        !$scope.newInput.type.id < 1) {
+                        $scope.addOrUpdateNewClicableOption();
+                        $scope.addOrUpdateNewInputToInputList();
+                    }
 
-    $scope.removeOptionStep2 = function () {
-        $scope.newClicableOptions = $scope.newClicableOptions.filter(item => item.id !== $scope.optionToRemove.id);
-        $scope.inputToRemove = null;
-    }
+                    index = $scope.inputs.map(function (e) { return e.id; }).indexOf(input.id);
+                    if (index > -1) {
+                        $scope.newInput = angular.copy($scope.inputs[index]);
+                        $scope.newClicableOptions = angular.copy($scope.inputs[index].clicableOptions);
+                    } else {
+                        alert("Something went realy wrong!");
+                    }
+                }
 
-    $scope.submitForm = function() {
-        if (!$scope.newInput.name.length < 1 &&
-            !$scope.newInput.type.id < 1) {
-            $scope.addOrUpdateNewClicableOption();
-            $scope.addOrUpdateNewInputToInputList();
-        }
+                $scope.editOption = function (input) {
+                    if ($scope.newClicableOption.content !== "") {
+                        $scope.addOrUpdateNewClicableOption();
+                    }
+                    $scope.newClicableOption = input;
+                }
 
-        $("#createdForm").submit();
-    }
+                $scope.removeInputStep1 = function (input) {
+                    $scope.inputToRemove = input;
+                }
 
-    $("#createdForm").submit(function (eventObj) {
-        $('<input />').attr('type', 'hidden')
-            .attr('name', "FormStructure")
-            .attr('value', JSON.stringify($scope.inputs))
-            .appendTo('#createdForm');
-        return true;
-    });
+                $scope.removeInputStep2 = function () {
+                    $scope.inputs = $scope.inputs.filter(item => item.id !== $scope.inputToRemove.id);
+                    $scope.inputToRemove = null;
+                }
 
-    $scope.cleanNewInput();
-    $scope.hideErrorBox();
-}]);
+                $scope.removeOptionStep1 = function (input) {
+                    $scope.optionToRemove = input;
+                }
+
+                $scope.removeOptionStep2 = function () {
+                    $scope.newClicableOptions =
+                        $scope.newClicableOptions.filter(item => item.id !== $scope.optionToRemove.id);
+                    $scope.inputToRemove = null;
+                }
+
+                $scope.submitForm = function () {
+                    if (!$scope.newInput.name.length < 1 &&
+                        !$scope.newInput.type.id < 1) {
+                        $scope.addOrUpdateNewClicableOption();
+                        $scope.addOrUpdateNewInputToInputList();
+                    }
+
+                    $scope.inputs = angular.copy($scope.inputs);
+
+                    $("#createdForm").submit();
+                }
+
+                $("#createdForm").submit(function (eventObj) {
+                    $('<input />').attr('type', 'hidden')
+                        .attr('name', "FormStructure")
+                        .attr('value', JSON.stringify($scope.inputs))
+                        .appendTo('#createdForm');
+                    return true;
+                });
+
+                $scope.cleanNewInput();
+                $scope.hideErrorBox();
+            }
+        ]);
+})(myApp);

@@ -1,167 +1,200 @@
 ﻿@model Ankieter.Models.Forms.CreatedForm
-
+    
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js" asp-append-version="false"></script>
+
+<script src="~/js/Form/formItemService.js" asp-append-version="true"></script>
+<script src="~/js/Form/formGeneratorController.js" asp-append-version="true"></script>
 <script src="~/js/Form/formCreatorController.js" asp-append-version="true"></script>
 
 <h3>Creat new form</h3>
 <hr />
-<div class="row" ng-app="myApp" ng-controller="formCreatorController">
-    <div class="alert alert-danger alert-dismissible" id="errorDiv" role="alert">
-        <a class="close" ng-click="hideErrorBox()">×</a>
-        {{errorMsg}}
-    </div>
-    <div id="fieldModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Filed removal</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to remove this field: {{ inputToRemove.name }} | {{ inputToRemove.type.name }} | {{ inputToRemove.isRequired ? "Required" : "Not required" }}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="removeInputStep2()" data-dismiss="modal">Yes</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                </div>
-            </div>
+<div ng-app="myApp" class="row">
+    <div ng-controller="formCreatorController">
+        <div class="alert alert-danger alert-dismissible" id="errorDiv" role="alert">
+            <a class="close" ng-click="hideErrorBox()">×</a>
+            {{errorMsg}}
         </div>
-    </div>
-    <div id="optionModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Filed removal</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to remove this option: {{ optionToRemove.content }}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="removeOptionStep2()" data-dismiss="modal">Yes</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6 spliter-right">
-        <form asp-action="Index" id="createdForm">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label" required="">Questionnaire name*</label>
-                <input asp-for="Name" class="form-control"/>
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="panel">
-                <div class="panel-body form-group">
-                    <div>
-                        <ul class="list-group" ng-repeat="input in inputs">
-                            <li class="list-group-item active">
-                                <div style="display: inline-block">
-                                    {{ input.name }} | {{ input.type.name }} | {{ input.isRequired ? "Required" : "Not required" }}
-                                </div>
-                                <div style="display: inline-block; text-align: right; float: right;">
-                                    <button class="btn btn-sm btn-default toolkitButton" ng-click="editInput(input)" type="button">
-                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-default toolkitButton" data-toggle="modal" data-target="#fieldModal" ng-click="removeInputStep1(input)" type="button">
-                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </li>
-                        </ul>
+        <div id="fieldModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Filed removal</h4>
                     </div>
-                    <div>
-                        <div class="form-group">
-                            <label for="inputName">Name*:</label>
-                            <input type="text" class="form-control" id="inputName" ng-model="newInput.name" required=""/>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputDescription">Description:</label>
-                            <textarea class="form-control" id="inputDescription" ng-model="newInput.description"></textarea>
+                    <div class="modal-body">
+                        <p>Are you sure you want to remove this field: {{ inputToRemove.name }} | {{ inputToRemove.type.name }} | {{ inputToRemove.isRequired ? "Required" : "Not required" }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="removeInputStep2()" data-dismiss="modal">Yes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="optionModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Filed removal</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to remove this option: {{ optionToRemove.content }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" ng-click="removeOptionStep2()" data-dismiss="modal">Yes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 spliter-right">
+            <form asp-action="Index" id="createdForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label" required="">Questionnaire name*</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="panel">
+                    <div class="panel-body form-group">
+                        <div>
+                            <ul class="list-group" ng-repeat="input in inputs">
+                                <li class="list-group-item active">
+                                    <div style="display: inline-block">
+                                        {{ input.name }} | {{ input.type.name }} | {{ input.isRequired ? "Required" : "Not required" }}
+                                    </div>
+                                    <div style="display: inline-block; text-align: right; float: right;">
+                                        <button class="btn btn-sm btn-default toolkitButton" ng-click="editInput(input)" type="button">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-default toolkitButton" data-toggle="modal" data-target="#fieldModal" ng-click="removeInputStep1(input)" type="button">
+                                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                         <div>
-                            <div class="col-md-6 dropdown">
-                                <label for="inputType">Type*:</label><br/>
-                                <button class="btn btn-default dropdown-toggle" type="button" id="inputType" data-toggle="dropdown">
-                                    {{newInput.type.name}}
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="inputType">
-                                    <li role="presentation">
-                                        <a role="menuitem" tabindex="-1" href="#" ng-click="typeSelected(possibleType)"
-                                           ng-repeat="possibleType in possibleInputTypes">{{possibleType.name}}</a>
-                                    </li>
-                                </ul>
+                            <div class="form-group">
+                                <label for="inputName">Name*:</label>
+                                <input type="text" class="form-control" id="inputName" ng-model="newInput.name" required="" />
                             </div>
-                            <div class="col-md-6 form-group">
-                                <label for="isRequired">Is input required:</label><br/>
-                                <input type="checkbox" id="isRequired" ng-model="newInput.isRequired"> {{newInput.isRequired ? "Yes" : "No"}}
+                            <div class="form-group">
+                                <label for="inputDescription">Description:</label>
+                                <textarea class="form-control" id="inputDescription" ng-model="newInput.description"></textarea>
+                            </div>
+                            <div>
+                                <div class="col-md-6 dropdown">
+                                    <label for="inputType">Type*:</label><br />
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="inputType" data-toggle="dropdown">
+                                        {{newInput.type.name}}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="inputType">
+                                        <li role="presentation">
+                                            <a role="menuitem" tabindex="-1" href="#" ng-click="typeSelected(possibleType)"
+                                               ng-repeat="possibleType in possibleInputTypes">{{possibleType.name}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label for="isRequired">Is input required:</label><br />
+                                    <input type="checkbox" id="isRequired" ng-model="newInput.isRequired"> {{newInput.isRequired ? "Yes" : "No"}}
+                                </div>
+                            </div>
+                            <div class="col-md-12" ng-show="newInput.type.id===1 || newInput.type.id===2">
+                                <div class="form-group">
+                                    <label for="inputMinLen">Min. number of character*:</label>
+                                    <input type="number" class="form-control" id="inputMinLen" ng-model="newInput.textMinLength" required="" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="inputMaxLen">Max. number of character(-1 for limitless)*:</label>
+                                    <input type="number" class="form-control" id="inputMaxLen" ng-model="newInput.textMaxLength" required="" />
+                                </div>
+                            </div>
+                            <div class="col-md-12" ng-show="newInput.type.id===3 || newInput.type.id===4 || newInput.type.id===5">
+                                <div class="form-group">
+                                    <label ng-show="newClicableOptions.length">Options:</label><br />
+
+                                    <ul class="list-group" ng-repeat="option in newClicableOptions">
+                                        <li class="list-group-item active">
+                                            <div style="display: inline-block">
+                                                {{ option.content }}
+                                            </div>
+                                            <div style="display: inline-block; text-align: right; float: right;">
+                                                <button class="btn btn-sm btn-default toolkitButton" ng-click="editOption(option)" type="button">
+                                                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-default toolkitButton" data-toggle="modal" data-target="#optionModal" ng-click="removeOptionStep1(option)" type="button">
+                                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                        </li>
+                                    </ul>
+
+                                    <label for="clicableOption">Add possible answers:</label>
+                                    <input type="text" class="form-control" id="clicableOption" ng-model="newClicableOption.content" />
+                                    <br />
+                                    <button class="form-group col-md-4 btn btn-default btn-success" style="width: 100%;" type="button" ng-click="addOrUpdateNewClicableOption()">
+                                        <span class="text-center">
+                                            Add new option
+                                            <i class="fa fa-plus-circle fa-lg fa-add" aria-hidden="true"></i>
+                                        </span>
+                                    </button>
+                                    <br />
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-12" ng-show="newInput.type.id===1 || newInput.type.id===2">
-                            <div class="form-group">
-                                <label for="inputMinLen">Min. number of character*:</label>
-                                <input type="number" class="form-control" id="inputMinLen" ng-model="newInput.textMinLength" required=""/>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputMaxLen">Max. number of character(-1 for limitless)*:</label>
-                                <input type="number" class="form-control" id="inputMaxLen" ng-model="newInput.textMaxLength" required=""/>
-                            </div>
-                        </div>
-                        <div class="col-md-12" ng-show="newInput.type.id===3 || newInput.type.id===4 || newInput.type.id===5">
-                            <div class="form-group">
-                                <label ng-show="newClicableOptions.length">Options:</label><br/>
-
-                                <ul class="list-group" ng-repeat="option in newClicableOptions">
-                                    <li class="list-group-item active">
-                                        <div style="display: inline-block">
-                                            {{ option.content }}
-                                        </div>
-                                        <div style="display: inline-block; text-align: right; float: right;">
-                                            <button class="btn btn-sm btn-default toolkitButton" ng-click="editOption(option)" type="button">
-                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-default toolkitButton" data-toggle="modal" data-target="#optionModal" ng-click="removeOptionStep1(option)" type="button">
-                                                <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </li>
-                                </ul>
-
-                                <label for="clicableOption">Add possible answers:</label>
-                                <input type="text" class="form-control" id="clicableOption" ng-model="newClicableOption.content"/>
-                                <br/>
-                                <button class="form-group col-md-4 btn btn-default btn-success" style="width: 100%;" type="button" ng-click="addOrUpdateNewClicableOption()">
-                                    <span class="text-center">
-                                        Add new option
-                                        <i class="fa fa-plus-circle fa-lg fa-add" aria-hidden="true"></i>
-                                    </span>
-                                </button>
-                                <br/>
+                        <button class="form-group col-md-4 btn btn-default btn-success" style="width: 100%;" type="button" ng-click="addOrUpdateNewInputToInputList()">
+                            <span class="text-center">
+                                Add new input
+                                <i class="fa fa-plus-circle fa-lg fa-add" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group padding-top-5">
+                    <input type="button" value="Create" ng-click="submitForm()" class="btn btn-default btn-danger" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6" ng-controller="formGeneratorController">
+        <div class="col-md-6">
+            <h3>Preview</h3>
+            <div class="row">
+                <div ng-repeat="item in items">
+                    <div class="panel">
+                        <div class="panel-body form-group">
+                            <!-- $scope.newInput={
+                            id: $scope.lastInputId++,
+                            type: $scope.possibleInputTypes[0],
+                            name: "" ,
+                            description: "" ,
+                            isRequired: true,
+                            textMinLength: 0,
+                            textMaxLength: -1,
+                            clicableOptions: []
+                            };
+                            -->
+                            <div>
+                                <div class="form-group">
+                                    <label for="itemid_{{ item.id }}">{{item.name + item.isRequired ? "*" : ""}}:</label>
+                                    <input type="text" class="form-control" id="itemid_{{ item.id }}" required="{{item.isRequired}}" />
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <button class="form-group col-md-4 btn btn-default btn-success" style="width: 100%;" type="button" ng-click="addOrUpdateNewInputToInputList()">
-                        <span class="text-center">
-                            Add new input
-                            <i class="fa fa-plus-circle fa-lg fa-add" aria-hidden="true"></i>
-                        </span>
-                    </button>
                 </div>
             </div>
-            <div class="form-group padding-top-5">
-                <input type="button" value="Create" ng-click="submitForm()" class="btn btn-default btn-danger"/>
-            </div>
-        </form>
-    </div>
-    <div class="col-md-6">
-        <h3>Preview</h3>
+        </div>
     </div>
 </div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
