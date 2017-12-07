@@ -59,7 +59,9 @@
                         return;
                     }
 
-                    index = $scope.inputs.map(function (e) { return e.id; }).indexOf($scope.newInput.id);
+                    $scope.addOrUpdateNewClicableOption();
+
+                    var index = $scope.inputs.map(function (e) { return e.id; }).indexOf($scope.newInput.id);
                     if (index > -1) {
                         $scope.inputs[index] = angular.copy($scope.newInput);
 
@@ -74,7 +76,7 @@
                         $scope.inputs.push(angular.copy($scope.newInput));
                     }
 
-                    formItemService.setItems($scope.items);
+                    formItemService.setItems($scope.inputs);
 
                     $scope.cleanNewInput();
                     $scope.cleanTypesMetadata();
@@ -86,7 +88,7 @@
                         return;
                     }
 
-                    index = $scope.newClicableOptions.map(function (e) { return e.id; })
+                    var index = $scope.newClicableOptions.map(function (e) { return e.id; })
                         .indexOf($scope.newClicableOption.id);
                     if (index > -1) {
                         $scope.newClicableOptions[index] = angular.copy($scope.newClicableOption);
@@ -94,6 +96,8 @@
                         $scope.newClicableOptions.push(angular.copy($scope.newClicableOption));
                     }
                     $scope.newClicableOption = { id: $scope.lastOptionId++, content: "" };
+
+                    formItemService.setItems($scope.inputs);
                 }
 
                 $scope.hideErrorBox = function () {
@@ -107,13 +111,15 @@
                         $scope.addOrUpdateNewInputToInputList();
                     }
 
-                    index = $scope.inputs.map(function (e) { return e.id; }).indexOf(input.id);
+                    var index = $scope.inputs.map(function (e) { return e.id; }).indexOf(input.id);
                     if (index > -1) {
                         $scope.newInput = angular.copy($scope.inputs[index]);
                         $scope.newClicableOptions = angular.copy($scope.inputs[index].clicableOptions);
                     } else {
                         alert("Something went realy wrong!");
                     }
+
+                    formItemService.setItems($scope.inputs);
                 }
 
                 $scope.editOption = function (input) {
@@ -130,6 +136,7 @@
                 $scope.removeInputStep2 = function () {
                     $scope.inputs = $scope.inputs.filter(item => item.id !== $scope.inputToRemove.id);
                     $scope.inputToRemove = null;
+                    formItemService.setItems($scope.inputs);
                 }
 
                 $scope.removeOptionStep1 = function (input) {
@@ -140,6 +147,7 @@
                     $scope.newClicableOptions =
                         $scope.newClicableOptions.filter(item => item.id !== $scope.optionToRemove.id);
                     $scope.inputToRemove = null;
+                    formItemService.setItems($scope.inputs);
                 }
 
                 $scope.submitForm = function () {
