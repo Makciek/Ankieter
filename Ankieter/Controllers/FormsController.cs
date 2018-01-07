@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ankieter.Models.Views.Forms;
 using Ankieter.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +21,16 @@ namespace Ankieter.Controllers
         // GET: Forms
         public async Task<ActionResult> Index()
         {
-            // todo: add paginatioN!!!
-            return View(await _formService.GetAllForms());
+            // todo: add paginatioN & per user filtering!!!
+            var forms = await _formService.GetAllForms();
+            return View(forms);
         }
 
         // GET: Forms/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var formDetailed = await _formService.GetForm(id);
+            return View(formDetailed);
         }
 
         // GET: Forms/Create

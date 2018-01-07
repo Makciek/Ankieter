@@ -8,5 +8,6 @@ namespace Ankieter.Services
     {
         Task<bool> CreateForm(CreatedForm form);
         Task<IEnumerable<FormViewModel>> GetAllForms();
+        Task<FormDetailsViewModel> GetForm(int id);
     }
 }

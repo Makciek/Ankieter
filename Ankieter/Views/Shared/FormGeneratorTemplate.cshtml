@@ -1,60 +1,57 @@
 ﻿<div class="col-md-6" ng-controller="formGeneratorController">
-    <h3>Preview</h3>
-    <div class="row">
-        <div ng-repeat="item in items">
-            <div class="panel">
-                <div class="panel-body form-group">
-                    <!-- $scope.newInput={
-                    id: $scope.lastInputId++,
-                    type: $scope.possibleInputTypes[0],
-                    name: "" ,
-                    description: "" ,
-                    isRequired: true,
-                    textMinLength: 0,
-                    textMaxLength: -1,
-                    clicableOptions: []
-                    };
-                        
-                    $scope.possibleInputTypes = [
-                    { id: 0, name: "Not Selected" },
-                    { id: 1, name: "Text" },
-                    { id: 2, name: "Textarea" },
-                    { id: 3, name: "Radio" },
-                    { id: 4, name: "Checkbox" },
-                    { id: 5, name: "Dropdown" },
-                    ];
-                    -->
-                        <div>
-                            <div class="form-group" ng-show="{{ item.type.name == 'Text' }}">
-                                <label for="itemid_{{ item.id }}">{{ item.name }}{{ item.isRequired ? "*" : "" }}:</label>
-                                <input type="text" class="form-control" id="itemid_{{ item.id }}" required="{{item.isRequired}}" placeholder="Length must be {{ item.textMaxLength >=0 ? 'between ' + item.textMinLength + ' and ' + item.textMaxLength : 'at least ' + item.textMinLength }} characters" />
-                            </div>
-                            <div class="form-group" ng-show="{{ item.type.name == 'Textarea' }}">
-                                <label for="itemid_{{ item.id }}">{{ item.name }}{{ item.isRequired ? "*" : "" }}:</label>
-                                <textarea type="text" class="form-control" id="itemid_{{ item.id }}" required="{{item.isRequired}}" placeholder="Length must be {{ item.textMaxLength >=0 ? 'between ' + item.textMinLength + ' and ' + item.textMaxLength : 'at least ' + item.textMinLength }} characters"></textarea>
-                            </div>
-                            <div class="form-group" ng-show="{{ item.type.name == 'Radio' || item.type.name == 'Checkbox' }}">
-                                <label for="itemid_{{ item.id }}">{{ item.name }}{{ item.isRequired ? "*" : "" }}:</label>
-                                <div class="{{ item.type.name.toLowerCase() }}" ng-repeat="itemsOption in item.clicableOptions">
-                                    <label><input type="{{ item.type.name.toLowerCase() }}" name="itemid_{{ item.id }}" value="">{{ itemsOption.content }}</label>
-                                </div>
-                            </div>
-                            <div class="form-group" ng-show="{{ item.type.name == 'Dropdown' }}">
-                                <div class="col-md-6 dropdown">
-                                    <label for="inputType">Type*:</label><br />
-                                    <button class="btn btn-default dropdown-toggle" type="button" id="itemid_{{ item.id }}_inputType" data-toggle="dropdown">
-                                        {{item.type.name}}{{ item.isRequired ? "*" : "" }}
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="itemid_{{ item.id }}_inputType">
-                                        <li role="presentation">
-                                            <a role="menuitem" tabindex="-1" href="#" ng-click=""
-                                               ng-repeat="itemsOption in item.clicableOptions">{{itemsOption.content}}</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+    <div ng-repeat="item in items">
+        <div class="panel">
+            <div class="panel-body form-group">
+                <!-- $scope.newInput={
+                id: $scope.lastInputId++,
+                type: $scope.possibleInputTypes[0],
+                name: "" ,
+                description: "" ,
+                isRequired: true,
+                textMinLength: 0,
+                textMaxLength: -1,
+                clicableOptions: []
+                };
+
+                $scope.possibleInputTypes = [
+                { id: 0, name: "Not Selected" },
+                { id: 1, name: "Text" },
+                { id: 2, name: "Textarea" },
+                { id: 3, name: "Radio" },
+                { id: 4, name: "Checkbox" },
+                { id: 5, name: "Dropdown" },
+                ];
+                -->
+                <div>
+                    <div class="form-group" ng-show="{{ item.type.name == 'Text' }}">
+                        <label for="itemid_{{ item.id }}">{{ item.name }}{{ item.isRequired ? "*" : "" }}:</label>
+                        <input type="text" class="form-control" id="itemid_{{ item.id }}" required="{{item.isRequired}}" placeholder="Length must be {{ item.textMaxLength >=0 ? 'between ' + item.textMinLength + ' and ' + item.textMaxLength : 'at least ' + item.textMinLength }} characters" />
+                    </div>
+                    <div class="form-group" ng-show="{{ item.type.name == 'Textarea' }}">
+                        <label for="itemid_{{ item.id }}">{{ item.name }}{{ item.isRequired ? "*" : "" }}:</label>
+                        <textarea type="text" class="form-control" id="itemid_{{ item.id }}" required="{{item.isRequired}}" placeholder="Length must be {{ item.textMaxLength >=0 ? 'between ' + item.textMinLength + ' and ' + item.textMaxLength : 'at least ' + item.textMinLength }} characters"></textarea>
+                    </div>
+                    <div class="form-group" ng-show="{{ item.type.name == 'Radio' || item.type.name == 'Checkbox' }}">
+                        <label for="itemid_{{ item.id }}">{{ item.name }}{{ item.isRequired ? "*" : "" }}:</label>
+                        <div class="{{ item.type.name.toLowerCase() }}" ng-repeat="itemsOption in item.clicableOptions">
+                            <label><input type="{{ item.type.name.toLowerCase() }}" name="itemid_{{ item.id }}" value="">{{ itemsOption.content }}</label>
                         </div>
+                    </div>
+                    <div class="form-group" ng-show="{{ item.type.name == 'Dropdown' }}">
+                        <div class="col-md-6 dropdown">
+                            <label for="inputType">Type*:</label><br />
+                            <button class="btn btn-default dropdown-toggle" type="button" id="itemid_{{ item.id }}_inputType" data-toggle="dropdown">
+                                {{item.type.name}}{{ item.isRequired ? "*" : "" }}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="itemid_{{ item.id }}_inputType">
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="#" ng-click=""
+                                       ng-repeat="itemsOption in item.clicableOptions">{{itemsOption.content}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

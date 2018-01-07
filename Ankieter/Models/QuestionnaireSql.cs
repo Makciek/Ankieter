@@ -8,8 +8,6 @@ namespace Ankieter.Models
     public class QuestionnaireSql : BaseEntiity
     {
         public string Name { get; set; }
-
-        [NotMapped]
-        public string QuestionnaireMongoId => Id.ToString().PadLeft(24, '0');
+        public string QuestionnaireMongoId { get; set; }
     }
 }

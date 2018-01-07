@@ -11,6 +11,12 @@
                     $scope.items = items;
                 });
 
+                var jsonBackendVal = unescape($("#_hiddednJsonStructure").val());
+
+                $scope.backendData = JSON.parse(jsonBackendVal);
+                $scope.items = JSON.parse($scope.backendData.jsonStructure);
+
+                console.log($scope.items);
             }
         ]);
 })(myApp);
