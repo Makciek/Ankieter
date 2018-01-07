@@ -4,6 +4,7 @@ using Ankieter.IRepo;
 using Ankieter.Models;
 using Ankieter.Models.Views.Forms;
 using Ankieter.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
@@ -11,6 +12,7 @@ using MongoDB.Bson.Serialization;
 
 namespace Ankieter.Controllers
 {
+    [Authorize]
     public class FormCreatorController : Controller
     {
         private readonly IFormService _formService;
