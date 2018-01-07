@@ -33,6 +33,10 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    @if (User.Claims.Any())
+                    {
+                        <li><a asp-area="" asp-controller="Forms" asp-action="Index">Forms</a></li>
+                    }
                     @if (User.IsInRole("admin") || true)
                     {
                         <li><a asp-area="" asp-controller="FormCreator" asp-action="Index">Create form</a></li> // for test purposes

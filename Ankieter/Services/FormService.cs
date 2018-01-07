@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ankieter.Data;
 using Ankieter.IRepo;
@@ -56,6 +58,17 @@ namespace Ankieter.Services
             }
 
             return true;
+        }
+
+        public async Task<IEnumerable<FormViewModel>> GetAllForms()
+        {
+            return (await _questionnaireSqlRepo.GetAllAsync()).Select(x=>new FormViewModel()
+            {
+                Id = x.Id,
+                MongoId = x.QuestionnaireMongoId,
+                Name = x.Name,
+                Modification = x.UpdateDate
+            });
         }
     }
 }
