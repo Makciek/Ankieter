@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Ankieter.Models
 {
-    public class Questionnaire
+    public class QuestionnaireSql : BaseEntiity
     {
         [BsonId]
         public ObjectId Id { get; set; }
@@ -12,5 +12,6 @@ namespace Ankieter.Models
         public string Name { get; set; }
 
         public virtual MongoDB.Bson.BsonArray Questions { get; set; }
+        public string QuestionnaireMongoId { get; set; }
     }
 }

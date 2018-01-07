@@ -8,10 +8,9 @@
     <WebStackScaffolding_IsReferencingScriptLibrariesSelected>True</WebStackScaffolding_IsReferencingScriptLibrariesSelected>
     <WebStackScaffolding_LayoutPageFile />
     <WebStackScaffolding_DbContextTypeFullName>Ankieter.Data.ApplicationDbContext</WebStackScaffolding_DbContextTypeFullName>
-    <RevDeBugCompilerPath>C:\Users\Makciek\AppData\Local\Microsoft\VisualStudio\15.0_a3e3659d\Extensions\dlnc434w.w3n\tmcc\</RevDeBugCompilerPath>
-    <RevDeBugActive>False</RevDeBugActive>
-    <RevDeBugMetadataPath>C:\Users\Makciek\Documents\RevDeBug\Ankieter\Metadata\\</RevDeBugMetadataPath>
-    <RevDeBugStateStorageType>NamedPipe</RevDeBugStateStorageType>
-    <isNetCore>true</isNetCore>
+    <Controller_SelectedScaffolderID>MvcControllerEmptyScaffolder</Controller_SelectedScaffolderID>
+    <Controller_SelectedScaffolderCategoryPath>root/Controller</Controller_SelectedScaffolderCategoryPath>
+    <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
+    <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
 </Project>
