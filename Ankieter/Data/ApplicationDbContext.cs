@@ -4,7 +4,6 @@ using Ankieter.Models;
 using Ankieter.Mongo;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using Ankieter.Models.Forms;
 
 namespace Ankieter.Data
 {
@@ -34,6 +33,6 @@ namespace Ankieter.Data
 
         public IMongoCollection<Question> Questions => _database.GetCollection<Question>("Question");
         public IMongoCollection<Answer> Answers => _database.GetCollection<Answer>("Answer");
-        public IMongoCollection<QuestionnaireMongo> Questionnaires => _database.GetCollection<QuestionnaireMongo>("QuestionnaireMongo");
+        public IMongoCollection<QuestionnaireMongo> QuestionnairesMongo => _database.GetCollection<QuestionnaireMongo>("QuestionnaireMongo");
     }
 }

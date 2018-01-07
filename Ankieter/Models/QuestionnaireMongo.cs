@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Ankieter.Models
 {
-    public class QuestionnaireMongo : BaseEntiity
+    public class QuestionnaireMongo
     {
-        public string FormStructure { get; set; }
-
+        [BsonId]
+        public ObjectId Id { get; set; }
+        public virtual MongoDB.Bson.BsonArray Questions { get; set; }
         public string QuestionnaireSqlId { get; set; }
     }
 }

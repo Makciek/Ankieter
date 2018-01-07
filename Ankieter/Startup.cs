@@ -12,6 +12,7 @@ using Ankieter.Data;
 using Ankieter.IRepo;
 using Ankieter.Models;
 using Ankieter.Mongo;
+using Ankieter.Repo;
 //using Ankieter.Repo;
 using Ankieter.Services;
 
@@ -31,11 +32,7 @@ namespace Ankieter
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
-
+            
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -45,9 +42,6 @@ namespace Ankieter
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IQuestionnaireSqlRepo, QuestionnaireSqlRepo>();
             services.AddTransient<IQuestionnaireMongoRepo, QuestionnaireMongoRepo>();
-            //services.AddTransient<IAnswerMongoRepo, AnswerMongoRepo>();
-            //services.AddTransient<IQuestionMongoRepo, QuestionMongoRepo>();
-            //services.AddTransient<IQuestionnaireMongoRepo, QuestionnaireMongoRepo>();
 
             services.AddMvc();
 

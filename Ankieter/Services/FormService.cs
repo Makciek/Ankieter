@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Ankieter.Data;
 using Ankieter.IRepo;
 using Ankieter.Models;
-using Ankieter.Models.Forms;
+using Ankieter.Models.Views.Forms;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 
@@ -12,10 +12,14 @@ namespace Ankieter.Services
     public class FormService : IFormService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IQuestionnaireMongoRepo _questionnaireMongoRepo;
+        private readonly IQuestionnaireSqlRepo _questionnaireSqlRepo;
 
-        public FormService(ApplicationDbContext context)
+        public FormService(ApplicationDbContext context, IQuestionnaireMongoRepo questionnaireMongoRepo, IQuestionnaireSqlRepo questionnaireSqlRepo)
         {
             _context = context;
+            _questionnaireMongoRepo = questionnaireMongoRepo;
+            _questionnaireSqlRepo = questionnaireSqlRepo;
         }
 
         public async Task<bool> CreateForm(CreatedForm form)
@@ -24,16 +28,22 @@ namespace Ankieter.Services
             {
                 try
                 {
-                    await _context.CreatedForm.AddAsync(form);
-                    await _context.SaveChangesAsync();
-
-                    await _context.Questionnaires.InsertOneAsync(new Questionnaire()
+                    await _context.QuestionnaireSqls.AddAsync(new QuestionnaireSql()
                     {
-                        Id = ObjectId.Parse(form.Id.ToString().PadLeft(24, '0')),
                         Name = form.Name,
-                        Questions = BsonSerializer.Deserialize<BsonArray>(form.FormStructure)
+                        CreateDate = DateTime.UtcNow,
+                        UpdateDate = DateTime.UtcNow
                     });
 
+                    await _context.SaveChangesAsync();
+
+                    var mondoRecord = new QuestionnaireMongo()
+                    {
+                        Id = ObjectId.Parse(form.Id.ToString().PadLeft(24, '0')),
+                        Questions = BsonSerializer.Deserialize<BsonArray>(form.FormStructure)
+                    };
+
+                    await _context.QuestionnairesMongo.InsertOneAsync(mondoRecord);
                     await _context.SaveChangesAsync();
 
                     transaction.Commit();

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Ankieter.Models.Forms
+namespace Ankieter.Models.Views.Forms
 {
     public class CreatedForm
     {
