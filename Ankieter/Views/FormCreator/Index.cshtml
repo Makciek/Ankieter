@@ -1,6 +1,6 @@
 ﻿@using Ankieter.Models.Views.Forms
 @model Ankieter.Models.Views.Forms.CreatedForm
-    
+
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js" asp-append-version="false"></script>
 
 <script src="~/js/Form/formItemService.js" asp-append-version="true"></script>
@@ -161,9 +161,10 @@
             </form>
         </div>
     </div>
-<h3>Preview</h3>
-<div class="row">
-    @await Html.PartialAsync("FormGeneratorTemplate")
+    <h3>Preview</h3>
+    <div class="row">
+        <input id="previewFlag" type="hidden" value="true" />
+        @await Html.PartialAsync("FormGeneratorTemplate")
     </div>
 </div>
 <div>

@@ -6,6 +6,7 @@ using Ankieter.Models.Views.Forms;
 using Ankieter.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Ankieter.Controllers
 {
@@ -42,11 +43,13 @@ namespace Ankieter.Controllers
         // POST: Forms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(string answerStructure)
         {
             try
             {
                 // TODO: Add insert logic here
+
+                var anwsers = JsonConvert.DeserializeObject<List<AnwserForm>>(answerStructure);
 
                 return RedirectToAction(nameof(Index));
             }

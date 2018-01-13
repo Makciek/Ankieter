@@ -9,14 +9,10 @@
 <script src="~/js/Form/formItemService.js" asp-append-version="true"></script>
 <script src="~/js/Form/formGeneratorController.js" asp-append-version="true"></script>
 
-<h2>title</h2>
+<h2>Submit your questionare</h2>
 
 <div ng-app="myApp" class="row">
     <input id="_hiddednJsonStructure" type="hidden" value='@Json.Serialize(Model)' />
-
+    <input id="previewFlag" type="hidden" value="false"/>
     @await Html.PartialAsync("FormGeneratorTemplate")
-    
-    <div class="form-group padding-top-5">
-        <input type="button" value="Submit answers" ng-click="submitForm()" class="btn btn-default btn-success" />
-    </div>
 </div>
