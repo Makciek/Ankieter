@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ankieter.Data;
 using Ankieter.IRepo;
+using Ankieter.Mails;
 using Ankieter.Models;
 using Ankieter.Mongo;
 using Ankieter.Repo;
@@ -42,7 +43,9 @@ namespace Ankieter
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IQuestionnaireSqlRepo, QuestionnaireSqlRepo>();
             services.AddTransient<IQuestionnaireMongoRepo, QuestionnaireMongoRepo>();
+            services.AddTransient<IMailService, MailService>();
 
+            
             services.AddMvc();
 
             services.Configure<MongoSettings>(options =>

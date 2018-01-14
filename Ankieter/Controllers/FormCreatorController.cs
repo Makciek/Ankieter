@@ -1,14 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Ankieter.IRepo;
-using Ankieter.Models;
+﻿using System.Threading.Tasks;
 using Ankieter.Models.Views.Forms;
 using Ankieter.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using MongoDB.Bson.IO;
-using MongoDB.Bson.Serialization;
 
 namespace Ankieter.Controllers
 {
