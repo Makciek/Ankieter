@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Ankieter.Models;
 using Ankieter.Models.Views.Forms;
 
 namespace Ankieter.Services
@@ -8,6 +9,7 @@ namespace Ankieter.Services
     {
         Task<bool> CreateForm(CreatedForm form);
         Task<IEnumerable<FormViewModel>> GetAllForms();
-        Task<FormDetailsViewModel> GetForm(int id);
+        Task<FormDetailsViewModel> SaveAnwsers(int id);
+        Task<bool> SaveAnwsers(string anwserJson, ApplicationUser user);
     }
 }

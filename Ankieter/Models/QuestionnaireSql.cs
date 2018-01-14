@@ -9,5 +9,6 @@ namespace Ankieter.Models
     {
         public string Name { get; set; }
         public string QuestionnaireMongoId { get; set; }
+        public string AnwsersStatisticsMongoId { get; set; }
     }
 }

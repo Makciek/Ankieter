@@ -85,7 +85,7 @@ namespace Ankieter.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("QuestionnaireMongoId");
+                    b.Property<string>("QuestionnaireMongo");
 
                     b.Property<DateTime>("UpdateDate");
 

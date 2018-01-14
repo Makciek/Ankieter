@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Ankieter.Models;
 using Ankieter.Models.Views.Forms;
 using Ankieter.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -13,10 +16,12 @@ namespace Ankieter.Controllers
     public class FormsController : Controller
     {
         private readonly IFormService _formService;
+        private UserManager<ApplicationUser> _manager;
 
-        public FormsController(IFormService formService)
+        public FormsController(IFormService formService, UserManager<ApplicationUser> manager)
         {
             _formService = formService;
+            _manager = manager;
         }
 
         // GET: Forms
@@ -30,7 +35,7 @@ namespace Ankieter.Controllers
         // GET: Forms/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var formDetailed = await _formService.GetForm(id);
+            var formDetailed = await _formService.SaveAnwsers(id);
             return View(formDetailed);
         }
 
@@ -43,14 +48,14 @@ namespace Ankieter.Controllers
         // POST: Forms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(string answerStructure)
+        public async Task<ActionResult> Create(string answerStructure)
         {
             try
             {
                 // TODO: Add insert logic here
-
-                var anwsers = JsonConvert.DeserializeObject<List<AnwserForm>>(answerStructure);
-
+                // security issues :P
+                var user = await _manager.GetUserAsync(HttpContext.User);
+                await _formService.SaveAnwsers(answerStructure, user);
                 return RedirectToAction(nameof(Index));
             }
             catch

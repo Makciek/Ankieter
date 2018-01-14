@@ -6,6 +6,6 @@ namespace Ankieter.Models
     {
         public string Value { get; set; }
 
-        public virtual ICollection<Answer> Answers { get; set; }
+        public virtual ICollection<AnswerSql> Answers { get; set; }
     }
 }

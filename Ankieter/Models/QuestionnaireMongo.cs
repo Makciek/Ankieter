@@ -8,6 +8,7 @@ namespace Ankieter.Models
     {
         [BsonId]
         public ObjectId Id { get; set; }
+        public AnwserStaticticsMongo AnwsersStaticticsMongo { get; set; }
         public virtual MongoDB.Bson.BsonArray Questions { get; set; }
         public string QuestionnaireSqlId { get; set; }
     }

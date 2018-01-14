@@ -27,12 +27,17 @@ namespace Ankieter.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        public DbSet<QuestionnaireSql> QuestionnaireSqls { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
 
         public IMongoCollection<Question> Questions => _database.GetCollection<Question>("Question");
-        public IMongoCollection<Answer> Answers => _database.GetCollection<Answer>("Answer");
+
+        public DbSet<QuestionnaireSql> QuestionnaireSqls { get; set; }
         public IMongoCollection<QuestionnaireMongo> QuestionnairesMongo => _database.GetCollection<QuestionnaireMongo>("QuestionnaireMongo");
+
+        public DbSet<AnswerSql> AnswersSql { get; set; }
+        public IMongoCollection<AnswerMongo> AnswersMongo => _database.GetCollection<AnswerMongo>("AnswersMongo");
+
+        public IMongoCollection<AnwserStaticticsMongo> AnwserStaticticsMongo => _database.GetCollection<AnwserStaticticsMongo>("AnwserStaticticsMongo");
     }
 }
