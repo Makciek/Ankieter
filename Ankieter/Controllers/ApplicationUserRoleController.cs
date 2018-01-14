@@ -1,5 +1,4 @@
-﻿using Ankieter.Data;
-using Ankieter.Models;
+﻿using Ankieter.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

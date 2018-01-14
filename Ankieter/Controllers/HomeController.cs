@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using Ankieter.Mails;
 using Microsoft.AspNetCore.Mvc;
 using Ankieter.Models;
 
@@ -10,8 +7,16 @@ namespace Ankieter.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IMailService _mailService;
+
+        public HomeController(IMailService mailService)
+        {
+            _mailService = mailService;
+        }
+
         public IActionResult Index()
         {
+            //_mailService.SendMail();
             return View();
         }
 
