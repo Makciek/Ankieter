@@ -37,9 +37,10 @@
                     {
                         <li><a asp-area="" asp-controller="Forms" asp-action="Index">Forms</a></li>
                     }
-                    @if (User.IsInRole("admin") || true)
+                    @if (User.IsInRole("admin") || true) // for test purposes
                     {
-                        <li><a asp-area="" asp-controller="FormCreator" asp-action="Index">Create form</a></li> // for test purposes
+                        <li><a asp-area="" asp-controller="Report" asp-action="Index">Reports</a></li> 
+                        <li><a asp-area="" asp-controller="FormCreator" asp-action="Index">Create form</a></li> 
                         <li><a asp-area="" asp-controller="ApplicationUser" asp-action="Index">Users</a></li>
                         <li><a asp-area="" asp-controller="ApplicationRole" asp-action="Index">Roles</a></li>
                     }

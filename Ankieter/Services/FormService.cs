@@ -186,15 +186,15 @@ namespace Ankieter.Services
                     var questStats = (await _context.AnwserStaticticsMongo.FindAsync(x =>
                         x.Id == ObjectId.Parse(questionnare.AnwsersStatisticsMongoId))).First();
 
-                    var questionsOfSelectableType = mongoQuestionare.Questions.Where(x => x.Type.Id > 2).Select(y=>y.Id);
+                    var questionsOfSelectableType = mongoQuestionare.Questions.Where(x => x.Type.Id > 2).Select(y => y.Id);
                     var updateableStats =
-                        questStats.Anwsers.Where(x => questionsOfSelectableType.Contains(x.QuestionId)).Select(y=>y.QuestionId);
+                        questStats.Anwsers.Where(x => questionsOfSelectableType.Contains(x.QuestionId)).Select(y => y.QuestionId);
 
                     var recordsToUpdate = anwsersDes.Items.Where(x => updateableStats.Contains(x.Id));
 
                     var updateDoc = new BsonDocument
                     {
-                        {"NumberOfAnwsers", 1},
+                        {"numberOfAnwsers", 1},
                         //     { "anwsers.0.answerIdToNumberOfAnwsers.0.v", 1 }
                     };
 
@@ -216,7 +216,7 @@ namespace Ankieter.Services
 
                             continue;
                         }
-                        
+
                         updateDoc.AddRange(new BsonDocument()
                         {
                             { $"anwsers.{recordToUpdate.Id}.answerIdToNumberOfAnwsers.{recordToUpdate.Answer}.v", 1 }
@@ -236,6 +236,53 @@ namespace Ankieter.Services
                 }
             }
             return true;
+        }
+
+        public async Task<ReportModel> GetFormReport(int id)
+        {
+                try
+                {
+                    var quest = _context.QuestionnaireSqls.Find(id);
+                    var stats = (await _context.AnwserStaticticsMongo.FindAsync(x =>
+                        x.Id == ObjectId.Parse(quest.AnwsersStatisticsMongoId))).First();
+                    var questionareStruct = (await _context.QuestionnairesMongo.FindAsync(x =>
+                        x.Id == ObjectId.Parse(quest.QuestionnaireMongoId))).First();
+
+                    var result = new ReportModel()
+                    {
+                        QuestionareId = id,
+                        NumberOfUsersAnwsered = stats.NumberOfAnwsers,
+                        Questions = new List<ReportModel.Question>()
+                    };
+
+                    foreach (var anwser in stats.Anwsers)
+                    {
+                        var questionStruct = questionareStruct.Questions.Find(x => x.Id == anwser.QuestionId);
+                        var questionReport = new ReportModel.Question()
+                        {
+                            Name = questionStruct.Name,
+                            AnwserOptions = new List<ReportModel.Question.AnwserOption>()
+                        };
+
+                        foreach (var anwserOption in questionStruct.ClicableOptions)
+                        {
+                            questionReport.AnwserOptions.Add(new ReportModel.Question.AnwserOption()
+                            {
+                                Name = anwserOption.Content,
+                                AnwserCount = anwser.AnswerIdToNumberOfAnwsers.Find(x => x.Key == anwserOption.Id).Value
+                            });
+                        }
+
+                        result.Questions.Add(questionReport);
+                    }
+
+                    return result;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
         }
     }
 }

@@ -11,5 +11,6 @@ namespace Ankieter.Services
         Task<IEnumerable<FormViewModel>> GetAllForms();
         Task<FormDetailsViewModel> GetForm(int id);
         Task<bool> SaveAnwsers(string anwserJson, ApplicationUser user);
+        Task<ReportModel> GetFormReport(int id);
     }
 }

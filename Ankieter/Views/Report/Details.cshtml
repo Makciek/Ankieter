@@ -1,0 +1,52 @@
+﻿@model Ankieter.Models.Views.Forms.ReportModel
+
+@{
+    ViewData["Title"] = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<label>Overall awnsers: @Model.NumberOfUsersAnwsered</label>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Question name
+            </th>
+            <th>
+                Anwser option name
+            </th>
+            <th>
+                Anwser count
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Questions)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            @foreach (var anwserOptions in item.AnwserOptions)
+            {
+                <tr>
+                    <td></td>   
+                    <td>
+                        @Html.DisplayFor(modelItem => anwserOptions.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => anwserOptions.AnwserCount)
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
