@@ -34,7 +34,7 @@ namespace Ankieter.Controllers
         // GET: Forms/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            var formDetailed = await _formService.SaveAnwsers(id);
+            var formDetailed = await _formService.GetForm(id);
             return View(formDetailed);
         }
 
@@ -51,7 +51,6 @@ namespace Ankieter.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
                 // security issues :P
                 var user = await _manager.GetUserAsync(HttpContext.User);
                 await _formService.SaveAnwsers(answerStructure, user);

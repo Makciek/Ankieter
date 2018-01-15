@@ -9,7 +9,7 @@ namespace Ankieter.Services
     {
         Task<bool> CreateForm(CreatedForm form);
         Task<IEnumerable<FormViewModel>> GetAllForms();
-        Task<FormDetailsViewModel> SaveAnwsers(int id);
+        Task<FormDetailsViewModel> GetForm(int id);
         Task<bool> SaveAnwsers(string anwserJson, ApplicationUser user);
     }
 }

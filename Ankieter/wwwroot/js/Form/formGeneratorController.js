@@ -13,12 +13,12 @@
 
                 $scope.setDropDownValue = function (item, value) {
                     item.answerName = value.content;
-                    item.answer = value.id;
+                    item.answer = value._id;
                 }
 
                 $scope.setRadioAnwser = function (item, value) {
                     item.answerName = value.content;
-                    item.answer = value.id;
+                    item.answer = value._id;
                 }
 
                 $scope.isPreview = unescape($("#previewFlag").val());
@@ -55,10 +55,14 @@
                 }
 
                 $("#createdForm").submit(function (eventObj) {
-                    var finalAwnsers = [];
+                    var finalAwnsers = {
+                        id: $scope.backendData.id,
+                        items: []
+                    };
+
                     for (var k = 0; k < $scope.items.length; k++) {
                         var anwserTemp = {
-                            id: $scope.items[k].id,
+                            id: $scope.items[k]._id,
                             answerName: $scope.items[k].answerName,
                             answer: $scope.items[k].answer
                         };
@@ -75,7 +79,7 @@
                             }
                         }
                         
-                        finalAwnsers.push(anwserTemp);
+                        finalAwnsers.items.push(anwserTemp);
                     }
 
                     $('<input />').attr('type', 'hidden')

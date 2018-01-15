@@ -12,8 +12,8 @@ using System;
 namespace Ankieter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180107135039_init")]
-    partial class init
+    [Migration("20180115190203_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,26 @@ namespace Ankieter.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Ankieter.Models.AnswerSql", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AnwserMongoId");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AnswersSql");
+                });
 
             modelBuilder.Entity("Ankieter.Models.ApplicationUser", b =>
                 {
@@ -80,11 +100,15 @@ namespace Ankieter.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AnwsersStatisticsMongoId");
+
                     b.Property<string>("ApplicationUserId");
 
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("QuestionnaireMongoId");
 
                     b.Property<DateTime>("UpdateDate");
 
@@ -221,6 +245,13 @@ namespace Ankieter.Migrations
                     b.ToTable("ApplicationRole");
 
                     b.HasDiscriminator().HasValue("ApplicationRole");
+                });
+
+            modelBuilder.Entity("Ankieter.Models.AnswerSql", b =>
+                {
+                    b.HasOne("Ankieter.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Ankieter.Models.QuestionnaireSql", b =>

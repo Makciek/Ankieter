@@ -6,9 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\**" />
     <Compile Remove="wwwroot\Form\**" />
+    <Content Remove="Data\Migrations\**" />
     <Content Remove="wwwroot\Form\**" />
+    <EmbeddedResource Remove="Data\Migrations\**" />
     <EmbeddedResource Remove="wwwroot\Form\**" />
+    <None Remove="Data\Migrations\**" />
     <None Remove="wwwroot\Form\**" />
   </ItemGroup>
 
@@ -31,10 +35,6 @@
 
   <ItemGroup>
     <None Include="Views\Shared\FormGeneratorTemplate.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>

@@ -80,7 +80,9 @@
 
                     $scope.cleanNewInput();
                     $scope.cleanTypesMetadata();
+                    $scope.newClicableOption = { id: 0, content: "" };
                     $scope.newClicableOptions = [];
+                    $scope.lastOptionId = 0;
                 }
 
                 $scope.addOrUpdateNewClicableOption = function () {

@@ -12,8 +12,8 @@ using System;
 namespace Ankieter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180107144815_changeMongoId")]
-    partial class changeMongoId
+    [Migration("20180115192912_added_questionnare_to_anwser")]
+    partial class added_questionnare_to_anwser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,30 @@ namespace Ankieter.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Ankieter.Models.AnswerSql", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AnwserMongoId");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<int?>("QuestionnareId");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionnareId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AnswersSql");
+                });
 
             modelBuilder.Entity("Ankieter.Models.ApplicationUser", b =>
                 {
@@ -80,13 +104,15 @@ namespace Ankieter.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("AnwsersStatisticsMongoId");
+
                     b.Property<string>("ApplicationUserId");
 
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("QuestionnaireMongo");
+                    b.Property<string>("QuestionnaireMongoId");
 
                     b.Property<DateTime>("UpdateDate");
 
@@ -223,6 +249,17 @@ namespace Ankieter.Migrations
                     b.ToTable("ApplicationRole");
 
                     b.HasDiscriminator().HasValue("ApplicationRole");
+                });
+
+            modelBuilder.Entity("Ankieter.Models.AnswerSql", b =>
+                {
+                    b.HasOne("Ankieter.Models.QuestionnaireSql", "Questionnare")
+                        .WithMany()
+                        .HasForeignKey("QuestionnareId");
+
+                    b.HasOne("Ankieter.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Ankieter.Models.QuestionnaireSql", b =>
