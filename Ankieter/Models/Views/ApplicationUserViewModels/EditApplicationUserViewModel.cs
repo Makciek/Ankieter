@@ -10,10 +10,15 @@ namespace Ankieter.Models
     public class EditApplicationUserViewModel
     {
         public string Id { get; set; }
+        
+        [Display(Name = "Imię")]
         public string Name { get; set; }
+
         public string Email { get; set; }
+
         public List<SelectListItem> ApplicationRoles { get; set; }
-        [Display(Name = "Role")]
+
+        [Display(Name = "Rola")]
         public string ApplicationRoleId { get; set; }
     }
 }

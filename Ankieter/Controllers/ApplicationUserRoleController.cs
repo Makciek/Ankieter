@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Ankieter.Data;
 
 namespace Ankieter.Controllers
 {
@@ -14,10 +15,12 @@ namespace Ankieter.Controllers
     public class ApplicationRoleController : Controller
     {
         private readonly RoleManager<ApplicationRole> roleManager;
+        private readonly ApplicationDbContext context;
 
-        public ApplicationRoleController(RoleManager<ApplicationRole> roleManager)
+        public ApplicationRoleController(RoleManager<ApplicationRole> roleManager, ApplicationDbContext _context)
         {
             this.roleManager = roleManager;
+            context = _context;
         }
 
         [HttpGet]
@@ -28,9 +31,15 @@ namespace Ankieter.Controllers
             {
                 RoleName = r.Name,
                 Id = r.Id,
-                Description = r.Description,
-                //NumberOfUsers = r.Users.Count
+                Description = r.Description
             }).ToList();
+
+            foreach(var role in model)
+            {
+                int rolesCount = context.UserRoles.Count(x => x.RoleId == role.Id);
+                role.NumberOfUsers = rolesCount;
+            }
+
             return View(model);
         }
         [HttpGet]
@@ -47,7 +56,7 @@ namespace Ankieter.Controllers
                     model.Description = applicationRole.Description;
                 }
             }
-            return PartialView("_AddEditApplicationRole", model);
+            return View("_AddEditApplicationRole", model);
         }
         [HttpPost]
         public async Task<IActionResult> AddEditApplicationRole(string id, ApplicationRoleViewModel model)
@@ -76,24 +85,29 @@ namespace Ankieter.Controllers
         [HttpGet]
         public async Task<IActionResult> DeleteApplicationRole(string id)
         {
-            string name = string.Empty;
             if (!String.IsNullOrEmpty(id))
             {
                 ApplicationRole applicationRole = await roleManager.FindByIdAsync(id);
                 if (applicationRole != null)
                 {
-                    name = applicationRole.Name;
+                    ApplicationRoleViewModel role = new ApplicationRoleViewModel()
+                    {
+                        Description = applicationRole.Description,
+                        Id = applicationRole.Id,
+                        RoleName = applicationRole.Name
+                    };
+                    return View("_DeleteApplicationRole", role);
                 }
             }
-            return PartialView("_DeleteApplicationRole", name);
+            return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteApplicationRole(string id, FormCollection form)
+        public async Task<IActionResult> DeleteApplicationRole([Bind("Description,RoleName,Id")]ApplicationRoleViewModel role)
         {
-            if (!String.IsNullOrEmpty(id))
+            if (role != null)
             {
-                ApplicationRole applicationRole = await roleManager.FindByIdAsync(id);
+                ApplicationRole applicationRole = await roleManager.FindByIdAsync(role.Id);
                 if (applicationRole != null)
                 {
                     IdentityResult roleRuslt = roleManager.DeleteAsync(applicationRole).Result;
@@ -102,8 +116,9 @@ namespace Ankieter.Controllers
                         return RedirectToAction("Index");
                     }
                 }
+                return View(role);
             }
-            return View();
+            return NotFound();
         }
     }
 }

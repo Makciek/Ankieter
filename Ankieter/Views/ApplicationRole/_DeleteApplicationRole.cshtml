@@ -1,12 +1,20 @@
-﻿@model string
+﻿@model Ankieter.Models.ApplicationRoleViewModel
 @using Ankieter.Models
 
-<form asp-action="DeleteApplicationRole" role="form">
-    @Html.Partial("_ModalHeader", new ModalHeader { Heading = "Delete Application Role" })
-
-    <div class="modal-body form-horizontal">
-        Are you want to delete @Model?
+<div class="form-horizontal">
+    <div class="row">
+        <form asp-action="DeleteApplicationRole" role="form">
+            <h3 class="text-center">Usuń rolę</h3>
+            <hr />
+            <div class="alert alert-danger text-center" role="alert">
+                <h4>Jesteś pewien, że chcesz usunąć rolę <span class="text-bold">@Model.RoleName</span>?</h4>
+            </div>
+            @Html.HiddenFor(x => x.Description)
+            @Html.HiddenFor(x => x.Id)
+            @Html.HiddenFor(x => x.RoleName)
+            <div class="col-lg-2 col-md-2 col-sm-2 col-lg-offset-5 col-md-offset-5 col-sm-offset-5">
+                <button type="submit" asp-action="DeleteApplicationRole" class="btn btn-danger">Usuń</button>
+            </div>
+        </form>
     </div>
-    @Html.Partial("_ModalFooter", new ModalFooter { SubmitButtonText = "Delete" })
-</form>
-
+</div>

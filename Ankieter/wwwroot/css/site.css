@@ -33,3 +33,15 @@
         display: none;
     }
 }
+
+#usersPanel{
+    margin-top:20px;
+}
+
+#createUserDiv{
+    float:right;
+}
+
+.text-bold{
+    font-weight:bold;
+}

@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Ankieter.Models.Views.ApplicationUserViewModels;
+using Ankieter.Data;
 
 namespace Ankieter.Controllers
 {
@@ -16,11 +18,13 @@ namespace Ankieter.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<ApplicationRole> roleManager;
+        private readonly ApplicationDbContext context;
 
-        public ApplicationUserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+        public ApplicationUserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ApplicationDbContext _context)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            context = _context;
         }
 
         [HttpGet]
@@ -33,6 +37,13 @@ namespace Ankieter.Controllers
                 Name = u.Name,
                 Email = u.Email
             }).ToList();
+
+            foreach(var user in model)
+            {
+                var role = context.UserRoles.FirstOrDefault(x => x.UserId == user.Id);
+                string roleName = roleManager.Roles.FirstOrDefault(x => x.Id == role.RoleId).Name;
+                user.RoleName = roleName;
+            }
             return View(model);
         }
 
@@ -45,7 +56,7 @@ namespace Ankieter.Controllers
                 Text = r.Name,
                 Value = r.Id
             }).ToList();
-            return PartialView("_AddUser", model);
+            return View("_AddUser", model);
         }
 
         [HttpPost]
@@ -96,7 +107,7 @@ namespace Ankieter.Controllers
                     model.ApplicationRoleId = roleManager.Roles.Single(r => r.Name == userManager.GetRolesAsync(user).Result.Single()).Id;
                 }
             }
-            return PartialView("_EditUser", model);
+            return View("_EditUser", model);
         }
 
         [HttpPost]
@@ -133,7 +144,7 @@ namespace Ankieter.Controllers
                     }
                 }
             }
-            return PartialView("_EditUser", model);
+            return View("_EditUser", model);
         }
 
         [HttpGet]
@@ -143,30 +154,32 @@ namespace Ankieter.Controllers
             if (!String.IsNullOrEmpty(id))
             {
                 ApplicationUser applicationUser = await userManager.FindByIdAsync(id);
-                if (applicationUser != null)
+                DeleteApplicationUserViewModel model = new DeleteApplicationUserViewModel()
                 {
-                    name = applicationUser.Name;
-                }
+                    Id = applicationUser.Id,
+                    UserName = applicationUser.UserName
+                };
+                return View("_DeleteUser", model);
             }
-            return PartialView("_DeleteUser", name);
+            return NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteUser(string id, FormCollection form)
+        public async Task<IActionResult> DeleteUser([Bind("Id,UserName")]DeleteApplicationUserViewModel model)
         {
-            if (!String.IsNullOrEmpty(id))
+            if (model != null)
             {
-                ApplicationUser applicationUser = await userManager.FindByIdAsync(id);
-                if (applicationUser != null)
+                ApplicationUser user = await userManager.FindByIdAsync(model.Id);
+                if (user != null)
                 {
-                    IdentityResult result = await userManager.DeleteAsync(applicationUser);
+                    IdentityResult result = await userManager.DeleteAsync(user);
                     if (result.Succeeded)
                     {
                         return RedirectToAction("Index");
                     }
                 }
             }
-            return View();
+            return View("_DeleteUser", model);
         }
     }
 }
