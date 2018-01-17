@@ -44,8 +44,8 @@ namespace Ankieter.Services
                    { id: 5, name: "Dropdown" },                 
                  */
 
-                if (formItem.Type.Id < 3) // we do not save text anwsers in statistics
-                    continue;
+                //if (formItem.Type.Id < 3) // we do not save text anwsers in statistics
+                //    continue;
 
                 var anwserStat = new AnwserStatisticsModel
                 {
@@ -202,22 +202,23 @@ namespace Ankieter.Services
                     {
                         if (string.IsNullOrEmpty(recordToUpdate.Answer))
                         {
-                            int i = 0;
+                            int i = -1;
                             foreach (var answerOption in recordToUpdate.Answers)
                             {
+                                i++;
                                 if (!answerOption.Value)
                                     continue;
 
-                                updateDoc.AddRange(new BsonDocument()
+                                updateDoc.Add(new BsonDocument()
                                 {
-                                    { $"anwsers.{recordToUpdate.Id}.answerIdToNumberOfAnwsers.{i++}.v", 1 }
+                                    { $"anwsers.{recordToUpdate.Id}.answerIdToNumberOfAnwsers.{i}.v", 1 }
                                 });
                             }
 
                             continue;
                         }
 
-                        updateDoc.AddRange(new BsonDocument()
+                        updateDoc.Add(new BsonDocument()
                         {
                             { $"anwsers.{recordToUpdate.Id}.answerIdToNumberOfAnwsers.{recordToUpdate.Answer}.v", 1 }
                         });
@@ -243,8 +244,11 @@ namespace Ankieter.Services
                 try
                 {
                     var quest = _context.QuestionnaireSqls.Find(id);
-                    var stats = (await _context.AnwserStaticticsMongo.FindAsync(x =>
-                        x.Id == ObjectId.Parse(quest.AnwsersStatisticsMongoId))).First();
+
+                    var statsMongoQuery = await _context.AnwserStaticticsMongo.FindAsync(x =>
+                        x.Id == ObjectId.Parse(quest.AnwsersStatisticsMongoId));
+
+                    var stats = statsMongoQuery.First();
                     var questionareStruct = (await _context.QuestionnairesMongo.FindAsync(x =>
                         x.Id == ObjectId.Parse(quest.QuestionnaireMongoId))).First();
 
