@@ -67,12 +67,17 @@
                             answer: $scope.items[k].answer
                         };
 
+                        if (anwserTemp.answer === "0" || anwserTemp.answer === 0) {
+                            finalAwnsers.items.push(anwserTemp);
+                            continue;
+                        }
+
                         if ($scope.items[k].answer == "") {
                             anwserTemp.answers = [];
 
                             for (var l = 0; l < $scope.items[k].clicableOptions.length; l++) {
                                 anwserTemp.answers.push({
-                                    id: $scope.items[k].clicableOptions[l].id,
+                                    id: $scope.items[k].clicableOptions[l]._id,
                                     value: ($scope.items[k].clicableOptions[l].hasOwnProperty("selectedValue") ?
                                         Number($scope.items[k].clicableOptions[l].selectedValue) : 0) 
                                 });
