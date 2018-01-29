@@ -160,7 +160,7 @@
                     }
 
                     $scope.inputs = angular.copy($scope.inputs);
-
+                    
                     $("#createdForm").submit();
                 }
 

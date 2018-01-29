@@ -43,14 +43,12 @@ namespace Ankieter.Services
                    { id: 4, name: "Checkbox" },
                    { id: 5, name: "Dropdown" },                 
                  */
-
-                //if (formItem.Type.Id < 3) // we do not save text anwsers in statistics
-                //    continue;
-
+                 
                 var anwserStat = new AnwserStatisticsModel
                 {
                     QuestionId = formItem.Id,
-                    AnswerIdToNumberOfAnwsers = new List<KeyValuePair<int, int>>()
+                    AnswerIdToNumberOfAnwsers = new List<KeyValuePair<int, int>>(),
+                    AnwserStringAnwser = new List<string>()
                 };
 
                 foreach (var clicableOption in formItem.ClicableOptions)
@@ -186,7 +184,7 @@ namespace Ankieter.Services
                     var questStats = (await _context.AnwserStaticticsMongo.FindAsync(x =>
                         x.Id == ObjectId.Parse(questionnare.AnwsersStatisticsMongoId))).First();
 
-                    var questionsOfSelectableType = mongoQuestionare.Questions.Where(x => x.Type.Id > 2).Select(y => y.Id);
+                    var questionsOfSelectableType = mongoQuestionare.Questions.Where(x => x.Type.Id > 0).Select(y => y.Id);
                     var updateableStats =
                         questStats.Anwsers.Where(x => questionsOfSelectableType.Contains(x.QuestionId)).Select(y => y.QuestionId);
 
@@ -198,8 +196,21 @@ namespace Ankieter.Services
                         //     { "anwsers.0.answerIdToNumberOfAnwsers.0.v", 1 }
                     };
 
+                    var addStringUpdate = new BsonDocument();
+
                     foreach (var recordToUpdate in recordsToUpdate)
                     {
+                        var typeId = mongoQuestionare.Questions.FirstOrDefault(x => x.Id == recordToUpdate.Id).Type.Id;
+
+                        if (typeId == 1 || typeId == 2)
+                        {
+                            addStringUpdate.Add(new BsonDocument()
+                            {
+                                { $"anwsers.{recordToUpdate.Id}.anwserStringAnwser", recordToUpdate.Answer }
+                            });
+                            continue;
+                        }
+
                         if (string.IsNullOrEmpty(recordToUpdate.Answer))
                         {
                             int i = -1;
@@ -223,11 +234,19 @@ namespace Ankieter.Services
                             { $"anwsers.{recordToUpdate.Id}.answerIdToNumberOfAnwsers.{recordToUpdate.Answer}.v", 1 }
                         });
                     }
+                    
+                    var updateInc = new BsonDocument("$inc", updateDoc);
+                    var updateAddStr = new BsonDocument("$addToSet", addStringUpdate);
 
-                    var update = new BsonDocument("$inc", updateDoc);
+                    var update = new BsonDocument()
+                    {
+                        updateInc,
+                        updateAddStr
+                    };
 
                     await _context.AnwserStaticticsMongo.FindOneAndUpdateAsync(filter, update);
-
+                    
+                    _context.SaveChanges();
                     transaction.Commit();
                 }
                 catch (Exception e)
@@ -262,9 +281,11 @@ namespace Ankieter.Services
                     foreach (var anwser in stats.Anwsers)
                     {
                         var questionStruct = questionareStruct.Questions.Find(x => x.Id == anwser.QuestionId);
+                    
                         var questionReport = new ReportModel.Question()
                         {
                             Name = questionStruct.Name,
+                            AnwsersString = anwser.AnwserStringAnwser,
                             AnwserOptions = new List<ReportModel.Question.AnwserOption>()
                         };
 

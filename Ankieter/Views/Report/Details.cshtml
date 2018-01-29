@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var counter = 0;
 }
 
 <h2>Index</h2>
@@ -35,10 +36,54 @@
                 <td></td>
                 <td></td>
             </tr>
-            @foreach (var anwserOptions in item.AnwserOptions)
+
+            if (item.AnwsersString != null && item.AnwsersString.Any())
+            {
+            <tr>
+                <td></td>
+                <td>
+                    @{ counter++; }
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal_@counter">
+                        Show text anwsers
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal_@counter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Anwsers</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table>
+                                        @foreach (var anwserString in item.AnwsersString)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @anwserString
+                                                </td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+            }
+
+            foreach (var anwserOptions in item.AnwserOptions)
             {
                 <tr>
-                    <td></td>   
+                    <td></td>
                     <td>
                         @Html.DisplayFor(modelItem => anwserOptions.Name)
                     </td>

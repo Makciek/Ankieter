@@ -53,7 +53,8 @@ namespace Ankieter.Controllers
             {
                 // security issues :P
                 var user = await _manager.GetUserAsync(HttpContext.User);
-                await _formService.SaveAnwsers(answerStructure, user);
+                if (!await _formService.SaveAnwsers(answerStructure, user))
+                    return View();
                 return RedirectToAction(nameof(Index));
             }
             catch

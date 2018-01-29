@@ -55,6 +55,28 @@
                 }
 
                 $("#createdForm").submit(function (eventObj) {
+                    for (var m = 0; m < $scope.items.length; m++) {
+                        if ($scope.items[m].isRequired) {
+                            if ($scope.items[m].answer === "" && $scope.items[m].type.name !== "Checkbox") {
+                                alert("You must fill all required(*) fields!");
+                                return false;
+                            }
+                            if ($scope.items[m].type.name === "Checkbox") {
+                                var hasAnwser = false;
+                                for (var n = 0; n < $scope.items[m].clicableOptions.length; n++) {
+                                    if ($scope.items[m].clicableOptions[n].selectedValue) {
+                                        hasAnwser = true;
+                                        break;
+                                    }
+                                }
+                                if (!hasAnwser) {
+                                    alert("You must fill all required(*) fields!");
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+
                     var finalAwnsers = {
                         id: $scope.backendData.id,
                         items: []

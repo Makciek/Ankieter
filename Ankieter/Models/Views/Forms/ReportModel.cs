@@ -11,12 +11,14 @@ namespace Ankieter.Models.Views.Forms
         public class Question
         {
             public string Name { get; set; }
+            public List<string> AnwsersString { get; set; }
             public List<AnwserOption> AnwserOptions { get; set; }
-
+            
             public class AnwserOption
             {
                 public string Name { get; set; }
                 public int AnwserCount { get; set; }
+                public List<string> AnwsersString { get; set; }
             }
         }
     }

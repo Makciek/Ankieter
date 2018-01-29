@@ -1,5 +1,5 @@
 ﻿<div class="col-md-6" ng-controller="formGeneratorController">
-    <form asp-action="Create" id="createdForm">
+    <form asp-action="Create" id="createdForm" name="createdForm">   
         <div ng-repeat="item in items">
             <div class="panel">
                 <div class="panel-body form-group">
@@ -28,7 +28,7 @@
                             <label for="itemid_{{ item.id }}">{{ item.name }}{{ item.isRequired ? "*" : "" }}:</label>
                             <input ng-model="item.answer" ng-required="item.isRequired"
                                    ng-minlength="Number(item.textMinLength)" ng-maxlength="Number(item.textMaxLength)" 
-                                   type="text" class="form-control" id="itemid_{{ item.id }}" required="{{item.isRequired}}" 
+                                   type="text" class="form-control questionare" id="itemid_{{ item.id }}" required="{{item.isRequired}}" 
                                    placeholder="Length must be {{ item.textMaxLength >=0 ? 'between ' + item.textMinLength + ' and ' + item.textMaxLength : 'at least ' + item.textMinLength }} characters" />
                         </div>
                         <div class="form-group" ng-show="{{ item.type.name == 'Textarea' }}">
@@ -54,12 +54,12 @@
                             </div>
                         </div>
                         <div class="form-group" ng-show="{{ item.type.name == 'Dropdown' }}">
-                            <div class="col-md-6 dropdown">
-                                <label for="inputType">Type*:</label><br />
-                                                                     <button class="btn btn-default dropdown-toggle" type="button" id="itemid_{{ item.id }}_inputType" data-toggle="dropdown">
-                                                                         {{item.answerName}}{{ item.isRequired ? "*" : "" }}
-                                                                         <span class="caret"></span>
-                                                                     </button>
+                            <div class="dropdown">
+                                <label for="inputType">{{item.name}}*:</label><br />
+                                <button class="btn btn-default dropdown-toggle" type="button" id="itemid_{{ item.id }}_inputType" data-toggle="dropdown">
+                                    {{item.answerName}}{{ item.isRequired ? "*" : "" }}
+                                    <span class="caret"></span>
+                                </button>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="itemid_{{ item.id }}_inputType">
                                     <li role="presentation">
                                         <a role="menuitem" tabindex="-1" href="#itemid_{{ item.id }}_inputType" ng-click="setDropDownValue(item, itemsOption)"

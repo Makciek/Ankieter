@@ -6,5 +6,6 @@ namespace Ankieter.Models.Views.Forms
     {
         public int QuestionId { get; set; }
         public List<KeyValuePair<int, int>> AnswerIdToNumberOfAnwsers { get; set; }
+        public List<string> AnwserStringAnwser { get; set; }
     }
 }

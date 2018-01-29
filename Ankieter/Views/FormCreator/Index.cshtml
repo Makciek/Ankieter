@@ -156,6 +156,39 @@
                     </div>
                 </div>
                 <div class="form-group padding-top-5">
+                    @*
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#usersToAnwseers">
+            Select users for questionare to anwser
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="usersToAnwseers" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Users</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="javascript:void(0);" id="selectedUsers">
+                            <fieldset id="selectedUsersIds">
+                                <legend>Select users: </legend>
+                                @foreach (var user in ViewBag.Users)
+                                {
+                                    <input type="checkbox" name="userId_@user.Id" value="@user.Id"/>
+                                    @user.Name<br/>
+                                }
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>*@
                     <input type="button" value="Create" ng-click="submitForm()" class="btn btn-default btn-danger" />
                 </div>
             </form>
